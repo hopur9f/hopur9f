@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.URL?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+
+<AnchorPane id="AnchorPane" prefHeight="461.0" prefWidth="634.0" styleClass="mainFxmlClass" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/9.0.4" fx:controller="hopur9f.FlightsUIController">
+    <stylesheets>
+        <URL value="@/FlightsCSS/flightsui.css" />
+    </stylesheets>
+   <children>
+      <HBox layoutY="36.0" prefHeight="212.0" prefWidth="634.0" />
+      <MenuBar prefHeight="37.0" prefWidth="634.0">
+        <menus>
+          <Menu mnemonicParsing="false" text="Hjálp">
+            <items>
+              <MenuItem mnemonicParsing="false" text="Close" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Hætta">
+            <items>
+              <MenuItem mnemonicParsing="false" text="About" />
+            </items>
+          </Menu>
+        </menus>
+      </MenuBar>
+   </children>
+</AnchorPane>
