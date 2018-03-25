@@ -1,31 +1,85 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import java.net.URL?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.Spinner?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 
-<AnchorPane id="AnchorPane" prefHeight="461.0" prefWidth="634.0" styleClass="mainFxmlClass" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/9.0.4" fx:controller="hopur9f.FlightsUIController">
+<AnchorPane id="AnchorPane" prefHeight="461.0" prefWidth="1000.0" styleClass="mainFxmlClass" xmlns="http://javafx.com/javafx/9.0.4" xmlns:fx="http://javafx.com/fxml/1" fx:controller="hopur9f.FlightsUIController">
     <stylesheets>
         <URL value="@/FlightsCSS/flightsui.css" />
     </stylesheets>
    <children>
-      <HBox layoutY="36.0" prefHeight="212.0" prefWidth="634.0" />
-      <MenuBar prefHeight="37.0" prefWidth="634.0">
+      <MenuBar prefHeight="37.0" prefWidth="1035.0">
         <menus>
           <Menu mnemonicParsing="false" text="Hjálp">
             <items>
-              <MenuItem mnemonicParsing="false" text="Close" />
+              <MenuItem mnemonicParsing="false" text="Um forritið " />
             </items>
           </Menu>
-          <Menu mnemonicParsing="false" text="Hætta">
-            <items>
-              <MenuItem mnemonicParsing="false" text="About" />
-            </items>
-          </Menu>
+          <Menu mnemonicParsing="false" onAction="#haettaActionPerformed" text="Hætta" />
         </menus>
       </MenuBar>
+      <HBox fx:id="leitarSkilyrdi" layoutY="37.0" prefHeight="131.0" prefWidth="547.0" stylesheets="@../FlightsCSS/flightsui.css">
+         <children>
+            <VBox prefHeight="92.0" prefWidth="258.0">
+               <children>
+                  <Label prefHeight="32.0" prefWidth="129.0" text="Brottfararstaður:" />
+                  <TextField prefHeight="37.0" prefWidth="437.0" />
+               </children>
+            </VBox>
+            <VBox prefHeight="92.0" prefWidth="258.0">
+               <children>
+                  <Label prefHeight="32.0" prefWidth="129.0" text="Áfangastaður:" />
+                  <TextField prefHeight="37.0" prefWidth="258.0" />
+               </children>
+            </VBox>
+         </children>
+         <padding>
+            <Insets left="15.0" />
+         </padding>
+      </HBox>
+      <HBox layoutX="547.0" layoutY="37.0" prefHeight="115.0" prefWidth="354.0">
+         <children>
+            <VBox prefHeight="153.0" prefWidth="111.0">
+               <children>
+                  <Label prefHeight="32.0" prefWidth="129.0" text="Fjöldi barna: " />
+                  <Spinner prefHeight="37.0" prefWidth="102.0" />
+               </children>
+            </VBox>
+            <VBox prefHeight="153.0" prefWidth="114.0">
+               <children>
+                  <Label prefHeight="32.0" prefWidth="129.0" text="Fjöldi fullorðina:" />
+                  <Spinner prefHeight="37.0" prefWidth="100.0" />
+               </children>
+            </VBox>
+            <VBox prefHeight="153.0" prefWidth="134.0">
+               <children>
+                  <Label prefHeight="31.0" prefWidth="108.0" text="Dagsetning flugs:" />
+                  <DatePicker prefHeight="37.0" prefWidth="131.0" />
+               </children>
+            </VBox>
+         </children>
+      </HBox>
+      <Button layoutX="926.0" layoutY="64.0" mnemonicParsing="false" prefHeight="44.0" prefWidth="91.0" text="Leita" />
+      <HBox layoutX="14.0" layoutY="168.0" prefHeight="32.0" prefWidth="293.0">
+         <children>
+            <Label text="Raða eftir:" />
+            <CheckBox mnemonicParsing="false" text="Lægsta Verði" />
+            <CheckBox mnemonicParsing="false" text="Styðsti tími" />
+         </children>
+      </HBox>
+      <ListView layoutX="13.0" layoutY="200.0" prefHeight="250.0" prefWidth="1006.0" />
    </children>
 </AnchorPane>
