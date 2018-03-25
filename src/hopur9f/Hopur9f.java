@@ -5,6 +5,9 @@
  */
 package hopur9f;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -17,14 +20,37 @@ import javafx.stage.Stage;
  */
 public class Hopur9f extends Application {
     
+    private final String url = "jdbc:postgresql://localhost/hopur9f";
+    private final String user = "postgres";
+    private final String password = "postgres";
+ 
+    /**
+     * Connect to the PostgreSQL database
+     *
+     * @return a Connection object
+     */
+    public Connection connect() {
+        Connection conn = null;
+        try {
+            conn = DriverManager.getConnection(url, user, password);
+            System.out.println("Connected to the PostgreSQL server successfully.");
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+ 
+        return conn;
+    }
+
+
     @Override
     public void start(Stage stage) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("FlightsUI.fxml"));
-        
+
         Scene scene = new Scene(root);
-        
+
         stage.setScene(scene);
         stage.show();
+        connect();
     }
 
     /**
@@ -33,5 +59,5 @@ public class Hopur9f extends Application {
     public static void main(String[] args) {
         launch(args);
     }
-    
+
 }
