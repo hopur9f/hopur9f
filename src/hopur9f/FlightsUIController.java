@@ -6,6 +6,7 @@
 package hopur9f;
 
 import java.net.URL;
+import java.util.Date;
 import java.util.ResourceBundle;
 import javafx.fxml.Initializable;
 
@@ -23,5 +24,10 @@ public class FlightsUIController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
     }    
+    
+    public void getFlights(String origin, String destination, Date departure, int numberAdults, int  numberChildren){
+     
+        
+    }
     
 }
