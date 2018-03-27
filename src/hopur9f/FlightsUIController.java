@@ -8,7 +8,10 @@ package hopur9f;
 import java.net.URL;
 import java.util.Date;
 import java.util.ResourceBundle;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.layout.HBox;
 
 /**
  * FXML Controller class
@@ -16,6 +19,9 @@ import javafx.fxml.Initializable;
  * @author astalara
  */
 public class FlightsUIController implements Initializable {
+
+    @FXML
+    private HBox leitarSkilyrdi;
 
     /**
      * Initializes the controller class.
@@ -25,9 +31,13 @@ public class FlightsUIController implements Initializable {
         // TODO
     }    
     
-    public void getFlights(String origin, String destination, Date departure, int numberAdults, int  numberChildren){
-     
-        
-    }
+    public void getFlights(String origin, String destination, Date departure, int numberAdults, int  numberChildren){  
     
+    }
+  
+    @FXML
+    private void haettaActionPerformed(ActionEvent event) {
+    
+    }
+
 }
