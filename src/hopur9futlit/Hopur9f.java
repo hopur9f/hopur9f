@@ -5,6 +5,8 @@
  */
 package hopur9futlit;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -19,28 +21,32 @@ import javafx.stage.Stage;
  * @author sigrundish
  */
 public class Hopur9f extends Application {
-    
-    private final String url = "jdbc:postgresql://localhost/hopur9f";
-    private final String user = "postgres";
-    private final String password = "postgres";
- 
+
     /**
      * Connect to the PostgreSQL database
+     * The connection here is not used, just nice to know 
+     * if the connection is successful in the beginning.
      *
      * @return a Connection object
+     * @throws java.net.URISyntaxException
+     * @throws java.sql.SQLException
      */
-    public Connection connect() {
+    private static Connection getConnection() throws URISyntaxException, SQLException {
         Connection conn = null;
         try {
-            conn = DriverManager.getConnection(url, user, password);
-            System.out.println("Connected to the PostgreSQL server successfully.");
-        } catch (SQLException e) {
+            URI dbUri = new URI("postgres://uyefpskpjkdwlw:f0e1254d03ae81c0ce719183f5985f211eefa45ed363bc013d58e6a221ac4b7a@ec2-54-247-81-88.eu-west-1.compute.amazonaws.com:5432/d23q86p0hkbsqb");
+
+            String username = dbUri.getUserInfo().split(":")[0];
+            String password = dbUri.getUserInfo().split(":")[1];
+            String dbUrl = "jdbc:postgresql://" + dbUri.getHost() + ':' + dbUri.getPort() + dbUri.getPath() + "?sslmode=require";
+            conn = DriverManager.getConnection(dbUrl, username, password);
+            System.out.println("Connection successful");
+            return conn;
+        } catch (URISyntaxException e) {
             System.out.println(e.getMessage());
         }
- 
         return conn;
     }
-
 
     @Override
     public void start(Stage stage) throws Exception {
@@ -50,7 +56,7 @@ public class Hopur9f extends Application {
 
         stage.setScene(scene);
         stage.show();
-        connect();
+        getConnection();
     }
 
     /**
