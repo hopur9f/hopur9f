@@ -2,14 +2,12 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group name="yfirferð">
-            <file>file:/Users/astalara/NetBeansProjects/hopur9f/src/hopur9f/FXMLDocumentController.java</file>
-            <file>file:/Users/astalara/NetBeansProjects/hopur9f/src/hopur9f/Hopur9f.java</file>
-            <file>file:/Users/astalara/NetBeansProjects/hopur9f/src/hopur9f/FXMLDocument.fxml</file>
-        </group>
         <group>
             <file>file:/Users/sigrundish/Skoli/Throun/hopur9f/src/hopur9f/Hopur9f.java</file>
             <file>file:/Users/sigrundish/Skoli/Throun/hopur9f/src/hopur9f/FlightsUI.fxml</file>
+        </group>
+        <group name="yfirferð">
+            <file>file:/Users/astalara/NetBeansProjects/hopur9f/src/hopur9f/FlightsUIController.java</file>
         </group>
     </open-files>
 </project-private>
