@@ -25,10 +25,10 @@
         <menus>
           <Menu mnemonicParsing="false" text="Hjálp">
             <items>
-              <MenuItem mnemonicParsing="false" text="Um forritið " />
+              <MenuItem mnemonicParsing="false" onAction="#aboutActionPerformed" text="Um forritið " />
+                  <MenuItem mnemonicParsing="false" onAction="#exitActionPerformed" text="Hætta" />
             </items>
           </Menu>
-          <Menu mnemonicParsing="false" onAction="#exitActionPerformed" text="Hætta" />
         </menus>
       </MenuBar>
       <HBox fx:id="searchContainer" layoutY="37.0" prefHeight="76.0" prefWidth="547.0" stylesheets="@../FlightsCSS/flightsui.css">

@@ -9,12 +9,16 @@ import java.net.URL;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.Spinner;
@@ -93,6 +97,36 @@ public class FlightsUIController implements Initializable {
 
     @FXML
     private void exitActionPerformed(ActionEvent event) {
+        System.out.println("Ég fór inn í exit");
+        Alert alert = new Alert(AlertType.CONFIRMATION);
+        alert.setTitle("Hætta");
+        alert.setContentText("Ertu viss um að þú viljir hætta");
+        
+        ButtonType confirm = new ButtonType("Já");
+        ButtonType decline = new ButtonType("Nei");
+        
+        alert.getButtonTypes().setAll(confirm, decline);
+        
+        Optional<ButtonType> result = alert.showAndWait();
+        if(result.get() == confirm) {
+            System.exit(0);
+        } else {
+            alert.close();
+        }
+        
+        
+    }
+
+    @FXML
+    private void aboutActionPerformed(ActionEvent event) {
+        Alert alert = new Alert(AlertType.INFORMATION);
+        alert.setTitle("Um forritið");
+        alert.setHeaderText("Flugleitarkerfi sem er lokaverkefni í "
+                + "Þróun Hugbúnaðar við Háskóla Íslands");
+        alert.setContentText(" Höfundar:\nÁsta Lára Magnúsdóttir\nHeiðdís"
+                + " Anna Lúðvíksdóttir\nMargrét Valdimarsdóttir\nSigrún Dís Hauksdóttir");
+        
+        alert.showAndWait();
     }
 
 }
