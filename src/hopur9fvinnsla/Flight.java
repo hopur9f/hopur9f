@@ -111,7 +111,7 @@ public class Flight {
     public List<String> getAvailableSeatList(){
         return availableSeatList;
     }
-    /*
+    
     private void generateSeatList(int planeCapacity){
         availableSeatList = new ArrayList<String>();
         String letter = "";
@@ -123,7 +123,7 @@ public class Flight {
                availableSeatList.add(letter + i);
            }
         }   
-    }*/
+    }
     
     public void remuveFromSeatList(String seatNumber){
         availableSeatList.remove(seatNumber);
