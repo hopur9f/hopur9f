@@ -6,6 +6,7 @@
 package hopur9f;
 
 import java.net.URL;
+import java.util.Date;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -28,10 +29,15 @@ public class FlightsUIController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
+    }    
+    
+    public void getFlights(String origin, String destination, Date departure, int numberAdults, int  numberChildren){  
+    
     }
-
+  
     @FXML
     private void haettaActionPerformed(ActionEvent event) {
+    
     }
 
 }
