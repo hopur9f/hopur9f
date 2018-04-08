@@ -7,7 +7,11 @@
             <file>file:/Users/sigrundish/Skoli/Throun/hopur9f/src/hopur9f/FlightsUI.fxml</file>
         </group>
         <group name="yfirferð">
-            <file>file:/Users/astalara/NetBeansProjects/hopur9f/src/hopur9f/FlightsUIController.java</file>
+            <file>file:/Users/astalara/NetBeansProjects/hopur9f/src/hopur9fvinnsla/Flight.java</file>
+            <file>file:/Users/astalara/NetBeansProjects/hopur9f/src/hopur9futlit/FlightsUI.fxml</file>
+            <file>file:/Users/astalara/NetBeansProjects/hopur9f/src/hopur9futlit/Hopur9f.java</file>
+            <file>file:/Users/astalara/NetBeansProjects/hopur9f/src/hopur9futlit/FlightsUIController.java</file>
+            <file>file:/Users/astalara/NetBeansProjects/hopur9f/src/Mocks/FlightsMock.java</file>
         </group>
     </open-files>
 </project-private>

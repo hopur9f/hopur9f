@@ -9,6 +9,7 @@ import java.net.URL;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import javafx.application.Platform;
@@ -34,8 +35,6 @@ import javafx.util.StringConverter;
  */
 public class FlightsUIController implements Initializable {
 
-    @FXML
-    private HBox searchContainer;
     @FXML
     private Label errorValidation;
     @FXML
@@ -89,6 +88,7 @@ public class FlightsUIController implements Initializable {
         date.setConverter(converter);
         date.setPromptText("dd-MM-yyyy");
         
+        
     }    
     
     public void getFlights(String origin, String destination, Date departure, int numberAdults, int  numberChildren){  
@@ -127,6 +127,25 @@ public class FlightsUIController implements Initializable {
                 + " Anna Lúðvíksdóttir\nMargrét Valdimarsdóttir\nSigrún Dís Hauksdóttir");
         
         alert.showAndWait();
+    }
+   
+
+    @FXML
+    private void searchActionPerformed(ActionEvent event) {
+        
+        String originValue = origin.getText();
+        String destinationValue = destination.getText();
+        int numAdultsValue = numAdults.getValue();
+        int numChildrenValue = numChildren.getValue();
+        LocalDate dateValue = date.getValue();
+       
+        errorValidation(originValue, destinationValue, numAdultsValue, numChildrenValue, dateValue);
+  
+    }
+    
+    private List<String> errorValidation(String originValue, String destinationValue, int numAdultsValue, int numChildrenValue, LocalDate dateValue) {
+        
+        return null;
     }
 
 }

@@ -31,7 +31,7 @@
           </Menu>
         </menus>
       </MenuBar>
-      <HBox fx:id="searchContainer" layoutY="37.0" prefHeight="76.0" prefWidth="547.0" stylesheets="@../FlightsCSS/flightsui.css">
+      <HBox layoutY="37.0" prefHeight="76.0" prefWidth="547.0" stylesheets="@../FlightsCSS/flightsui.css">
          <children>
             <VBox prefHeight="92.0" prefWidth="258.0">
                <children>
@@ -72,7 +72,7 @@
             </VBox>
          </children>
       </HBox>
-      <Button fx:id="search" layoutX="926.0" layoutY="64.0" mnemonicParsing="false" prefHeight="44.0" prefWidth="91.0" text="Leita" />
+      <Button fx:id="search" layoutX="926.0" layoutY="64.0" mnemonicParsing="false" onAction="#searchActionPerformed" prefHeight="44.0" prefWidth="91.0" text="Leita" />
       <HBox layoutX="14.0" layoutY="230.0" prefHeight="32.0" prefWidth="293.0">
          <children>
             <Label text="Raða eftir:">
