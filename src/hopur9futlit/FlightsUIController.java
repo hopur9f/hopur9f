@@ -86,6 +86,8 @@ public class FlightsUIController implements Initializable {
     private TableColumn<Flight, Integer> luggagePriceColumn;
 
     private ObservableList<Flight> data = FXCollections.observableArrayList();
+    @FXML
+    private Button bookingButton;
 
     /**
      * Initializes the controller class.
