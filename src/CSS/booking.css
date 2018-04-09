@@ -1,0 +1,17 @@
+/*
+ * Empty Stylesheet file.
+ */
+
+.mainFxmlClass {
+    -fx-max-width: 500;
+}
+.Header {
+    -fx-font-size: 20;
+    -fx-padding: 10 0 10 0;
+}
+
+.informationStyle {
+    -fx-padding: 10;
+    -fx-spacing: 10;
+}
+ 
