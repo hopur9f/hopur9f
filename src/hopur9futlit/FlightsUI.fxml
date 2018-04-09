@@ -6,11 +6,12 @@
 <?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.Spinner?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
@@ -86,7 +87,23 @@
             <CheckBox mnemonicParsing="false" text="Styðsti tími" />
          </children>
       </HBox>
-      <ListView layoutX="14.0" layoutY="262.0" prefHeight="250.0" prefWidth="1006.0" />
       <Label fx:id="errorValidation" layoutX="14.0" layoutY="113.0" prefHeight="115.0" prefWidth="517.0" />
+      <TableView fx:id="flightResults" editable="true" layoutX="14.0" layoutY="262.0" prefHeight="200.0" prefWidth="1005.0">
+        <columns>
+            <TableColumn fx:id="airlineColumn" prefWidth="75.0" text="Airline" />
+            <TableColumn fx:id="flightNumberColumn" prefWidth="75.0" text="Flightnumber" />
+            <TableColumn fx:id="originColumn" prefWidth="75.0" text="Origin" />
+            <TableColumn fx:id="destinationColumn" prefWidth="75.0" text="Destination" />
+          <TableColumn fx:id="adultPriceColumn" prefWidth="75.0" text="Adult Price" />
+          <TableColumn fx:id="childPriceColumn" prefWidth="75.0" text="Child Price" />
+            <TableColumn fx:id="durationColumn" prefWidth="75.0" text="Duration" />
+            <TableColumn fx:id="departureColumn" prefWidth="75.0" text="Departure" />
+            <TableColumn fx:id="arrivalColumn" prefWidth="75.0" text="Arrival" />
+            <TableColumn fx:id="disabilityColumn" prefWidth="75.0" text="Disability Access" />
+            <TableColumn fx:id="animalColumn" prefWidth="95.0" text="Animal Transfer" />
+            <TableColumn fx:id="handluggagePriceColumn" prefWidth="76.0" text="Handluggage Price" />
+            <TableColumn fx:id="luggagePriceColumn" prefWidth="83.0" text="Luggage Price" />
+        </columns>
+      </TableView>
    </children>
 </AnchorPane>

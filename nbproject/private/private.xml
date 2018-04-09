@@ -2,16 +2,16 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group>
-            <file>file:/Users/sigrundish/Skoli/Throun/hopur9f/src/hopur9f/Hopur9f.java</file>
-            <file>file:/Users/sigrundish/Skoli/Throun/hopur9f/src/hopur9f/FlightsUI.fxml</file>
-        </group>
         <group name="yfirferð">
             <file>file:/Users/astalara/NetBeansProjects/hopur9f/src/hopur9fvinnsla/Flight.java</file>
             <file>file:/Users/astalara/NetBeansProjects/hopur9f/src/hopur9futlit/FlightsUI.fxml</file>
             <file>file:/Users/astalara/NetBeansProjects/hopur9f/src/hopur9futlit/Hopur9f.java</file>
             <file>file:/Users/astalara/NetBeansProjects/hopur9f/src/hopur9futlit/FlightsUIController.java</file>
             <file>file:/Users/astalara/NetBeansProjects/hopur9f/src/Mocks/FlightsMock.java</file>
+        </group>
+        <group>
+            <file>file:/Users/sigrundish/Skoli/Throun/hopur9f/src/Mocks/FlightsMock.java</file>
+            <file>file:/Users/sigrundish/Skoli/Throun/hopur9f/src/hopur9futlit/Hopur9f.java</file>
         </group>
     </open-files>
 </project-private>
