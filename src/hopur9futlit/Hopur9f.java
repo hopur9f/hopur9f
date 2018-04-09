@@ -50,7 +50,7 @@ public class Hopur9f extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("BookingUI.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("FlightsUI.fxml"));
 
         Scene scene = new Scene(root);
 

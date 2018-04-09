@@ -105,6 +105,7 @@
             <TableColumn fx:id="luggagePriceColumn" prefWidth="83.0" text="Luggage Price" />
         </columns>
       </TableView>
-      <Button fx:id="bookingButton" layoutX="14.0" layoutY="469.0" mnemonicParsing="false" prefHeight="44.0" prefWidth="206.0" text="Bóka flug" />
+      <Button fx:id="bookingButton" layoutX="14.0" layoutY="469.0" mnemonicParsing="false" onAction="#bookingButtonActionPerformed" prefHeight="44.0" prefWidth="206.0" text="Bóka flug" />
+      <!--<fx:include fx:id="BookingDialog" source="BookingUI.fxml" />-->
    </children>
 </AnchorPane>

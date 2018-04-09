@@ -19,7 +19,10 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
@@ -33,6 +36,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
+import javafx.stage.Stage;
 import javafx.util.StringConverter;
 
 /**
@@ -164,10 +168,11 @@ public class FlightsUIController implements Initializable {
 
     /**
      * Generates list of flights from database by using the FlightService class
+     *
      * @param origin origin of the flight.
      * @param dest destination of the flight.
      * @param date the departure date of the flight.
-     * @return 
+     * @return
      */
     private List<Flight> getFlights(String origin, String dest, LocalDate date) {
         FlightService fs = new FlightService();
@@ -176,6 +181,7 @@ public class FlightsUIController implements Initializable {
 
     /**
      * Inserts rows into the flightResutls table.
+     *
      * @param flights List of flights to insert into the flightResults table.
      */
     private void setFlightResultsTable(List<Flight> flights) {
@@ -198,6 +204,22 @@ public class FlightsUIController implements Initializable {
         handluggagePriceColumn.setCellValueFactory(new PropertyValueFactory<>("handLuggagePrice"));
         luggagePriceColumn.setCellValueFactory(new PropertyValueFactory<>("luggagePrice"));
 
+    }
+
+    @FXML
+    private void bookingButtonActionPerformed(ActionEvent event) throws Exception {
+        Flight flight = (Flight) flightResults.getSelectionModel().getSelectedItem();
+        int numberAdults = numAdults.getValue();
+        int numberChildren = numChildren.getValue();
+        BookingUIController bookingController
+                = new BookingUIController(flight, numberAdults, numberChildren );
+        System.out.println("Booking Controller" + bookingController);
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("BookingUI.fxml"));
+        fxmlLoader.setController(bookingController);
+        Parent root1 = (Parent) fxmlLoader.load();
+        Stage stage = new Stage();
+        stage.setScene(new Scene(root1));
+        stage.show();
     }
 
     @FXML
