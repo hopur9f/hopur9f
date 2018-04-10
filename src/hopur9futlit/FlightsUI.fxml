@@ -37,13 +37,13 @@
             <VBox prefHeight="92.0" prefWidth="258.0">
                <children>
                   <Label prefHeight="32.0" prefWidth="129.0" text="Brottfararstaður:" />
-                  <TextField fx:id="origin" prefHeight="37.0" prefWidth="437.0" />
+                  <TextField fx:id="origin" prefHeight="37.0" prefWidth="437.0" text="Reykjavík" />
                </children>
             </VBox>
             <VBox prefHeight="92.0" prefWidth="258.0">
                <children>
                   <Label prefHeight="32.0" prefWidth="129.0" text="Áfangastaður:" />
-                  <TextField fx:id="destination" prefHeight="37.0" prefWidth="258.0" />
+                  <TextField fx:id="destination" prefHeight="37.0" prefWidth="258.0" text="Akureyri" />
                </children>
             </VBox>
          </children>
