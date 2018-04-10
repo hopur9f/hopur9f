@@ -54,7 +54,7 @@ public class BookingUIController implements Initializable {
 
     @FXML
     private VBox errorValidationVBox = new VBox();
-    
+
     @FXML
     private Label totalPriceLabel = new Label();
 
@@ -70,7 +70,7 @@ public class BookingUIController implements Initializable {
 
         for (int i = 1; i <= numberPassenger; i++) {
             VBox vBoxContainer = new VBox();
-            vBoxContainer.setId("passenger"+i);
+            vBoxContainer.setId("passenger" + i);
             Label grownUp = new Label("Upplýsingar um farþega " + i + " :");
             grownUp.getStyleClass().add("Header");
             Label lastName = new Label("Eftirnafn:");
@@ -115,6 +115,9 @@ public class BookingUIController implements Initializable {
         payment.setId("payment");
         Label paymentLabel = new Label("Greiðsluupplýsingar:");
         paymentLabel.getStyleClass().add("Header");
+        Label cardHolder = new Label("Korthafi:");
+        TextField cardHolderInput = new TextField();
+        cardHolderInput.setId("cardHolder");
         Label cardNumber = new Label("Kortanúmer:");
         TextField cardNumberInput = new TextField();
         cardNumberInput.setId("cardNumber");
@@ -142,6 +145,7 @@ public class BookingUIController implements Initializable {
         confirmButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {
+                errorValidationVBox.getChildren().clear();
                 information.getChildren().forEach((Node vBox) -> {
                     int passengerNr = 0;
                     //Get passenger info
@@ -193,11 +197,9 @@ public class BookingUIController implements Initializable {
                         System.out.println("Birthday: " + birthDay);
                         System.out.println("Number of luggage: " + numBagsString);
                         System.out.println("Number of hand luggage: " + numHandBagsString);
-                       
+
                         //Display error validation for passenger info.
-                        errorValidationVBox.getChildren().clear();
                         List<String> validation = validatePassenger(firstname, lastname, email, nationality, birthDay, passengerNr);
-                        System.out.println("validation" + validation);
                         String errorString = "";
                         if (validation.size() > 0) {
                             for (String s : validation) {
@@ -206,10 +208,11 @@ public class BookingUIController implements Initializable {
                             }
                         }
                     }
-                    
+
                     //Get payment info
                     if (vBox instanceof VBox && vBox.getId().equals("payment")) {
                         System.out.println("************Payment************");
+                        String cardHolder = "";
                         String cardNumber = "";
                         String expMonth = "";
                         String expYear = "";
@@ -219,6 +222,9 @@ public class BookingUIController implements Initializable {
                             String id = node.getId();
                             if (id != null) {
                                 switch (id) {
+                                    case "cardHolder":
+                                        cardHolder = ((TextField) node).getText();
+                                        break;
                                     case "cardNumber":
                                         cardNumber = ((TextField) node).getText();
                                         break;
@@ -240,6 +246,16 @@ public class BookingUIController implements Initializable {
                         System.out.println("expMonth: " + expMonth);
                         System.out.println("expYear: " + expYear);
                         System.out.println("csv: " + csv);
+                        
+                        //Display error validation for passenger info.
+                        List<String> validation = validatePaymentInfo(cardHolder, cardNumber, csv);
+                        String errorString = "";
+                        if (validation.size() > 0) {
+                            for (String s : validation) {
+                                Label errorMessage = new Label(s);
+                                errorValidationVBox.getChildren().add(errorMessage);
+                            }
+                        }
                     }
 
                 });
@@ -247,13 +263,18 @@ public class BookingUIController implements Initializable {
         });
 
     }
-    
-//    public void setPassenger
 
     public boolean isValidEmailAddress(String email) {
         String ePattern = "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$";
         java.util.regex.Pattern p = java.util.regex.Pattern.compile(ePattern);
         java.util.regex.Matcher m = p.matcher(email);
+        return m.matches();
+    }
+
+    public boolean isValidCardNumber(String cardNumber) {
+        String ePattern = "^(?:4[0-9]{12}(?:[0-9]{3})?|[25][1-7][0-9]{14}|6(?:011|5[0-9][0-9])[0-9]{12}|3[47][0-9]{13}|3(?:0[0-5]|[68][0-9])[0-9]{11}|(?:2131|1800|35\\d{3})\\d{11})$";
+        java.util.regex.Pattern p = java.util.regex.Pattern.compile(ePattern);
+        java.util.regex.Matcher m = p.matcher(cardNumber);
         return m.matches();
     }
 
@@ -273,6 +294,20 @@ public class BookingUIController implements Initializable {
         }
         if (birthday == null) {
             validation.add("Vinsamlegast veljið fæðingardag farþega númer: " + passengerNr + ".");
+        }
+        return validation;
+    }
+
+    private List<String> validatePaymentInfo(String cardHolder, String cardNumber, String csv) {
+        List<String> validation = new ArrayList<>();
+        if (cardHolder == null || cardHolder.isEmpty()) {
+            validation.add("Vinsamlegast tilgreinið korthafa.");
+        }
+        if (!isValidCardNumber(cardNumber)) {
+            validation.add("Kortanúmer er ekki á réttu formi.");
+        }
+        if (csv.length() != 3) {
+            validation.add("csv er ekki á réttu formi, það skal vera þriggja stafa tala.");
         }
         return validation;
     }
