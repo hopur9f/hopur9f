@@ -1,2 +1,5 @@
 /build/
 /dist/
+src/.DS_Store
+.DS_Store
+nbproject/private/private.xml
