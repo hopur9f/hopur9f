@@ -36,6 +36,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.util.StringConverter;
 
@@ -47,7 +48,7 @@ import javafx.util.StringConverter;
 public class FlightsUIController implements Initializable {
 
     @FXML
-    private Label errorValidation;
+    private VBox errorValidationVbox;
     @FXML
     private TextField origin;
     @FXML
@@ -209,23 +210,31 @@ public class FlightsUIController implements Initializable {
 
     @FXML
     private void bookingButtonActionPerformed(ActionEvent event) throws Exception {
+        errorValidationVbox.getChildren().clear();
         Flight flight = (Flight) flightResults.getSelectionModel().getSelectedItem();
         int numberAdults = numAdults.getValue();
         int numberChildren = numChildren.getValue();
-        BookingUIController bookingController
-                = new BookingUIController(flight, numberAdults, numberChildren );
-        System.out.println("Booking Controller" + bookingController);
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("BookingUI.fxml"));
-        fxmlLoader.setController(bookingController);
-        Parent root1 = (Parent) fxmlLoader.load();
-        Stage stage = new Stage();
-        stage.setScene(new Scene(root1));
-        stage.show();
+        if (flight == null) {
+            String errorString = "Vinsamlegast veljið flug.";
+            Label errorLabel = new Label(errorString);
+            errorValidationVbox.getChildren().add(errorLabel);
+        } else {
+            BookingUIController bookingController
+                    = new BookingUIController(flight, numberAdults, numberChildren);
+            System.out.println("Booking Controller" + bookingController);
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("BookingUI.fxml"));
+            fxmlLoader.setController(bookingController);
+            Parent root1 = (Parent) fxmlLoader.load();
+            Stage stage = new Stage();
+            stage.setScene(new Scene(root1));
+            stage.show();
+        }
+
     }
 
     @FXML
     private void searchActionPerformed(ActionEvent event) {
-
+        errorValidationVbox.getChildren().clear();
         String originValue = origin.getText();
         String destinationValue = destination.getText();
         int numAdultsValue = numAdults.getValue();
@@ -235,7 +244,10 @@ public class FlightsUIController implements Initializable {
         List<String> validation = errorValidation(originValue, destinationValue, numAdultsValue, numChildrenValue, dateValue);
 
         if (validation.size() > 0) {
-            errorValidation.setText("errors");
+            //Loop through errors and create Label for each error and add it to the errorValidationVbox.
+            String errorString = "Validation errors!";
+            Label errorLabel = new Label(errorString);
+            errorValidationVbox.getChildren().add(errorLabel);
         } else {
             List<Flight> flights = this.getFlights(originValue, destinationValue, dateValue);
             this.setFlightResultsTable(flights);

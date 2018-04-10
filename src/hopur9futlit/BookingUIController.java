@@ -54,6 +54,9 @@ public class BookingUIController implements Initializable {
 
     @FXML
     private VBox errorValidationVBox = new VBox();
+    
+    @FXML
+    private Label totalPriceLabel = new Label();
 
     /**
      * Initializes the controller class.
@@ -62,7 +65,8 @@ public class BookingUIController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         information.getStyleClass().add("informationStyle");
         errorValidationVBox.setId("errorValidation");
-         information.getChildren().add(errorValidationVBox);
+        totalPriceLabel.setText("Heildarverð: " + String.valueOf(this.totalPrice));
+        information.getChildren().addAll(totalPriceLabel, errorValidationVBox);
 
         for (int i = 1; i <= numberPassenger; i++) {
             VBox vBoxContainer = new VBox();
