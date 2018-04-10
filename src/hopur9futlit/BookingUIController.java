@@ -62,10 +62,11 @@ public class BookingUIController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         information.getStyleClass().add("informationStyle");
         errorValidationVBox.setId("errorValidation");
+         information.getChildren().add(errorValidationVBox);
 
         for (int i = 1; i <= numberPassenger; i++) {
             VBox vBoxContainer = new VBox();
-            vBoxContainer.setId("passenger");
+            vBoxContainer.setId("passenger"+i);
             Label grownUp = new Label("Upplýsingar um farþega " + i + " :");
             grownUp.getStyleClass().add("Header");
             Label lastName = new Label("Eftirnafn:");
@@ -103,7 +104,7 @@ public class BookingUIController implements Initializable {
             vBoxContainer.getChildren().addAll(grownUp, lastName, lastnameInput,
                     firstName, firstnameInput, email, emailInput, birthdate, datepicker, nationality, nationalityInput, numBags,
                     numBagsInput, numHandBags, numHandBagsInput);
-            information.getChildren().addAll(errorValidationVBox, vBoxContainer);
+            information.getChildren().add(vBoxContainer);
         }
 
         VBox payment = new VBox();
@@ -140,7 +141,7 @@ public class BookingUIController implements Initializable {
                 information.getChildren().forEach((Node vBox) -> {
                     int passengerNr = 0;
                     //Get passenger info
-                    if (vBox instanceof VBox && vBox.getId().equals("passenger")) {
+                    if (vBox instanceof VBox && vBox.getId().contains("passenger")) {
                         passengerNr++;
                         System.out.println("************Passenger************");
                         String lastname = "";

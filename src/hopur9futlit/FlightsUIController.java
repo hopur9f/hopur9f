@@ -185,6 +185,7 @@ public class FlightsUIController implements Initializable {
      * @param flights List of flights to insert into the flightResults table.
      */
     private void setFlightResultsTable(List<Flight> flights) {
+        data.clear();
 
         flights.forEach((flight) -> {
             data.add(flight);
