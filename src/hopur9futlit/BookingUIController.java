@@ -187,7 +187,7 @@ public class BookingUIController implements Initializable {
                         System.out.println("Nationality: " + nationality);
                         System.out.println("Birthday: " + birthDay);
                         System.out.println("Number of luggage: " + numBagsString);
-                        System.out.println("Number of hand luggage: " + numHandBagsString
+                        System.out.println("Number of hand luggage: " + numHandBagsString);
                        
                         //Display error validation for passenger info.
                         errorValidationVBox.getChildren().clear();
