@@ -53,7 +53,7 @@ public class BookingUIController implements Initializable {
     private VBox information;
 
     @FXML
-    private Label errorValidation = new Label();
+    private VBox errorValidationVBox = new VBox();
 
     /**
      * Initializes the controller class.
@@ -61,6 +61,7 @@ public class BookingUIController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         information.getStyleClass().add("informationStyle");
+        errorValidationVBox.setId("errorValidation");
 
         for (int i = 1; i <= numberPassenger; i++) {
             VBox vBoxContainer = new VBox();
@@ -102,7 +103,7 @@ public class BookingUIController implements Initializable {
             vBoxContainer.getChildren().addAll(grownUp, lastName, lastnameInput,
                     firstName, firstnameInput, email, emailInput, birthdate, datepicker, nationality, nationalityInput, numBags,
                     numBagsInput, numHandBags, numHandBagsInput);
-            information.getChildren().addAll(errorValidation, vBoxContainer);
+            information.getChildren().addAll(errorValidationVBox, vBoxContainer);
         }
 
         VBox payment = new VBox();
@@ -186,24 +187,21 @@ public class BookingUIController implements Initializable {
                         System.out.println("Nationality: " + nationality);
                         System.out.println("Birthday: " + birthDay);
                         System.out.println("Number of luggage: " + numBagsString);
-                        System.out.println("Number of hand luggage: " + numHandBagsString);
-                        errorValidation.setText("");
-
+                        System.out.println("Number of hand luggage: " + numHandBagsString
+                       
+                        //Display error validation for passenger info.
+                        errorValidationVBox.getChildren().clear();
                         List<String> validation = validatePassenger(firstname, lastname, email, nationality, birthDay, passengerNr);
                         System.out.println("validation" + validation);
                         String errorString = "";
                         if (validation.size() > 0) {
                             for (String s : validation) {
-                                System.out.println("s: " + s);
-                                System.out.println("errorString: " + errorString);
-                                errorString += errorString + s + "\n";
+                                Label errorMessage = new Label(s);
+                                errorValidationVBox.getChildren().add(errorMessage);
                             }
-                            errorValidation.setText(errorString);
-                            errorValidation.setWrapText(true);
-                            errorValidation.setMinWidth(Region.USE_PREF_SIZE);
                         }
                     }
-
+                    
                     //Get payment info
                     if (vBox instanceof VBox && vBox.getId().equals("payment")) {
                         System.out.println("************Payment************");
@@ -244,6 +242,8 @@ public class BookingUIController implements Initializable {
         });
 
     }
+    
+//    public void setPassenger
 
     public boolean isValidEmailAddress(String email) {
         String ePattern = "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$";
