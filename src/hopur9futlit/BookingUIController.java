@@ -6,27 +6,25 @@
 package hopur9futlit;
 
 import hopur9fvinnsla.Flight;
+import hopur9fvinnsla.Passenger;
 import java.net.URL;
 import java.time.LocalDate;
-import java.util.Date;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 
 /**
@@ -55,7 +53,7 @@ public class BookingUIController implements Initializable {
     private VBox information;
 
     @FXML
-    private Label errorValidation;
+    private VBox errorValidationVBox = new VBox();
 
     /**
      * Initializes the controller class.
@@ -63,6 +61,7 @@ public class BookingUIController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         information.getStyleClass().add("informationStyle");
+        errorValidationVBox.setId("errorValidation");
 
         for (int i = 1; i <= numberPassenger; i++) {
             VBox vBoxContainer = new VBox();
@@ -104,7 +103,7 @@ public class BookingUIController implements Initializable {
             vBoxContainer.getChildren().addAll(grownUp, lastName, lastnameInput,
                     firstName, firstnameInput, email, emailInput, birthdate, datepicker, nationality, nationalityInput, numBags,
                     numBagsInput, numHandBags, numHandBagsInput);
-            information.getChildren().add(vBoxContainer);
+            information.getChildren().addAll(errorValidationVBox, vBoxContainer);
         }
 
         VBox payment = new VBox();
@@ -138,11 +137,11 @@ public class BookingUIController implements Initializable {
         confirmButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {
-
-                information.getChildren().forEach((vBox) -> {
-
+                information.getChildren().forEach((Node vBox) -> {
+                    int passengerNr = 0;
                     //Get passenger info
                     if (vBox instanceof VBox && vBox.getId().equals("passenger")) {
+                        passengerNr++;
                         System.out.println("************Passenger************");
                         String lastname = "";
                         String firstname = "";
@@ -151,30 +150,31 @@ public class BookingUIController implements Initializable {
                         LocalDate birthDay = LocalDate.now();
                         String numBagsString = "";
                         String numHandBagsString = "";
-                        for (Node nodeIn : ((VBox) vBox).getChildren()) {
-                            String id = nodeIn.getId();
+                        //Loop through UI elements inside passenger VBox.
+                        for (Node node : ((VBox) vBox).getChildren()) {
+                            String id = node.getId();
                             if (id != null) {
                                 switch (id) {
                                     case "lastname":
-                                        lastname = ((TextField) nodeIn).getText();
+                                        lastname = ((TextField) node).getText();
                                         break;
                                     case "firstname":
-                                        firstname = ((TextField) nodeIn).getText();
+                                        firstname = ((TextField) node).getText();
                                         break;
                                     case "email":
-                                        email = ((TextField) nodeIn).getText();
+                                        email = ((TextField) node).getText();
                                         break;
                                     case "nationality":
-                                        nationality = ((ComboBox) nodeIn).getValue().toString();
+                                        nationality = ((ComboBox) node).getValue().toString();
                                         break;
                                     case "datepicker":
-                                        birthDay = ((DatePicker) nodeIn).getValue();
+                                        birthDay = ((DatePicker) node).getValue();
                                         break;
                                     case "numBags":
-                                        numBagsString = ((Spinner) nodeIn).getValue().toString();
+                                        numBagsString = ((Spinner) node).getValue().toString();
                                         break;
                                     case "numHandBags":
-                                        numHandBagsString = ((Spinner) nodeIn).getValue().toString();
+                                        numHandBagsString = ((Spinner) node).getValue().toString();
                                         break;
                                     default:
                                         break;
@@ -187,7 +187,19 @@ public class BookingUIController implements Initializable {
                         System.out.println("Nationality: " + nationality);
                         System.out.println("Birthday: " + birthDay);
                         System.out.println("Number of luggage: " + numBagsString);
-                        System.out.println("Number of hand luggage: " + numHandBagsString);
+                        System.out.println("Number of hand luggage: " + numHandBagsString
+                       
+                        //Display error validation for passenger info.
+                        errorValidationVBox.getChildren().clear();
+                        List<String> validation = validatePassenger(firstname, lastname, email, nationality, birthDay, passengerNr);
+                        System.out.println("validation" + validation);
+                        String errorString = "";
+                        if (validation.size() > 0) {
+                            for (String s : validation) {
+                                Label errorMessage = new Label(s);
+                                errorValidationVBox.getChildren().add(errorMessage);
+                            }
+                        }
                     }
                     
                     //Get payment info
@@ -197,21 +209,22 @@ public class BookingUIController implements Initializable {
                         String expMonth = "";
                         String expYear = "";
                         String csv = "";
-                        for (Node nodeIn : ((VBox) vBox).getChildren()) {
-                            String id = nodeIn.getId();
+                        //Loop through UI elements inside payment VBox.
+                        for (Node node : ((VBox) vBox).getChildren()) {
+                            String id = node.getId();
                             if (id != null) {
                                 switch (id) {
                                     case "cardNumber":
-                                        cardNumber = ((TextField) nodeIn).getText();
+                                        cardNumber = ((TextField) node).getText();
                                         break;
                                     case "expMonth":
-                                        expMonth = ((ComboBox) nodeIn).getValue().toString();
+                                        expMonth = ((ComboBox) node).getValue().toString();
                                         break;
                                     case "expYear":
-                                        expYear = ((ComboBox) nodeIn).getValue().toString();
+                                        expYear = ((ComboBox) node).getValue().toString();
                                         break;
                                     case "csv":
-                                        csv = ((TextField) nodeIn).getText();
+                                        csv = ((TextField) node).getText();
                                         break;
                                     default:
                                         break;
@@ -227,6 +240,44 @@ public class BookingUIController implements Initializable {
                 });
             }
         });
+
+    }
+    
+//    public void setPassenger
+
+    public boolean isValidEmailAddress(String email) {
+        String ePattern = "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$";
+        java.util.regex.Pattern p = java.util.regex.Pattern.compile(ePattern);
+        java.util.regex.Matcher m = p.matcher(email);
+        return m.matches();
+    }
+
+    private List<String> validatePassenger(String firstname, String lastname, String email, String nationality, LocalDate birthday, int passengerNr) {
+        List<String> validation = new ArrayList<>();
+        if (firstname == null || firstname.isEmpty()) {
+            validation.add("Vinsamlegast tilgreinið fyrsta nafn farþega nr: " + passengerNr);
+        }
+        if (lastname == null || lastname.isEmpty()) {
+            validation.add("Vinsamlegast tilgreinið föðurnafn/ættarnafn farþega nr: " + passengerNr);
+        }
+        if (!isValidEmailAddress(email)) {
+            validation.add("Email farþega nr: " + passengerNr + " er ekki á réttu formi.");
+        }
+        if (nationality.equals("Þjóðerni")) {
+            validation.add("Vinsamlegast veljið þjóðerni á farþega númer: " + passengerNr + ".");
+        }
+        if (birthday == null) {
+            validation.add("Vinsamlegast veljið fæðingardag farþega númer: " + passengerNr + ".");
+        }
+        return validation;
+    }
+
+    private void addPassenger(Passenger passenger) {
+        //todo
+    }
+
+    private void addBooking(Passenger passenger) {
+        //todo
     }
 
 }
