@@ -85,7 +85,7 @@
                <padding>
                   <Insets right="5.0" />
                </padding></Label>
-            <RadioButton fx:id="priceSort" mnemonicParsing="false" selected="true" text="Lægsta verði">
+            <RadioButton fx:id="priceSort" mnemonicParsing="false" selected="true" text="Lægsta fullorðinsverð">
                <padding>
                   <Insets left="5.0" />
                </padding>

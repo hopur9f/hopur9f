@@ -151,7 +151,7 @@ public class BookingUIController implements Initializable {
         VBox payment = new VBox();
         payment.setId("payment");
         Label paymentLabel = new Label("Greiðsluupplýsingar:");
-        totalPriceLabel.setText("Heildarverð: " + String.valueOf(this.totalPrice));
+        totalPriceLabel.setText("Flugverð: " + String.valueOf(this.totalPrice));
         paymentLabel.getStyleClass().add("Header");
         totalPriceLabel.getStyleClass().add("payment");
         Label cardHolder = new Label("Korthafi:");
@@ -252,8 +252,9 @@ public class BookingUIController implements Initializable {
                             for (String s : validation) {
                                 Label errorMessage = new Label(s);
                                 errorValidationVBox.getChildren().add(errorMessage);
-                                scroll.setVvalue(0.0);
+                                
                             }
+                            scroll.setVvalue(0.0);
                         }
                     }
 
@@ -303,10 +304,12 @@ public class BookingUIController implements Initializable {
                                 Label errorMessage = new Label(s);
                                 errorValidationVBox.getChildren().add(errorMessage);
                             }
+                            scroll.setVvalue(0.0);
                         }
                     }
 
                 });
+                
             }
         });
 
