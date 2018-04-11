@@ -36,6 +36,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -94,12 +95,13 @@ public class FlightsUIController implements Initializable {
     private ObservableList<Flight> data = FXCollections.observableArrayList();
     @FXML
     private Button bookingButton;
-
+ 
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        
         SpinnerValueFactory<Integer> numAdultsfactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 100, 1);
         numAdults.setValueFactory(numAdultsfactory);
 
@@ -137,7 +139,6 @@ public class FlightsUIController implements Initializable {
 
     @FXML
     private void exitActionPerformed(ActionEvent event) {
-        System.out.println("Ég fór inn í exit");
         Alert alert = new Alert(AlertType.CONFIRMATION);
         alert.setTitle("Hætta");
         alert.setContentText("Ertu viss um að þú viljir hætta");
@@ -192,6 +193,7 @@ public class FlightsUIController implements Initializable {
         flights.forEach((flight) -> {
             data.add(flight);
         });
+      
         if(data.isEmpty()) {
             Label noFlightsLabel = new Label("Engin flug fundust fyrir þína leit.");
             errorValidationVbox.getChildren().add(noFlightsLabel);
@@ -227,7 +229,6 @@ public class FlightsUIController implements Initializable {
         } else {
             BookingUIController bookingController
                     = new BookingUIController(flight, numberAdults, numberChildren);
-            System.out.println("Booking Controller" + bookingController);
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("BookingUI.fxml"));
             fxmlLoader.setController(bookingController);
             Parent root1 = (Parent) fxmlLoader.load();
