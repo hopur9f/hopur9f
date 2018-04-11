@@ -11,10 +11,13 @@ import java.net.URL;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -29,11 +32,14 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Toggle;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
@@ -92,6 +98,12 @@ public class FlightsUIController implements Initializable {
     private ObservableList<Flight> data = FXCollections.observableArrayList();
     @FXML
     private Button bookingButton;
+    
+    final ToggleGroup group = new ToggleGroup();
+    @FXML
+    private RadioButton priceSort;
+    @FXML
+    private RadioButton timeSort;
 
     /**
      * Initializes the controller class.
@@ -130,8 +142,28 @@ public class FlightsUIController implements Initializable {
         };
         date.setConverter(converter);
         date.setPromptText("dd-MM-yyyy");
-
+            
+        priceSort.setToggleGroup(group);
+        timeSort.setToggleGroup(group);
+        
+        group.selectedToggleProperty().addListener(new ChangeListener<Toggle>(){
+           public void changed(ObservableValue<? extends Toggle> ov, Toggle old_toggle, Toggle new_toggle) {
+                sortList(data);
+           } 
+        });
     }
+
+    private void sortList(List tempList){
+        if (group.getSelectedToggle() == priceSort) {
+            Comparator<Flight> c = Comparator.comparingInt(Flight::getAdultPrice);
+            tempList.sort(c);
+        }else {
+            Comparator<Flight> c = Comparator.comparingInt(Flight::getAdultPrice);
+            tempList.sort(c);
+        }
+    }
+    
+
 
     @FXML
     private void exitActionPerformed(ActionEvent event) {
@@ -151,7 +183,6 @@ public class FlightsUIController implements Initializable {
         } else {
             alert.close();
         }
-
     }
 
     @FXML
@@ -176,7 +207,10 @@ public class FlightsUIController implements Initializable {
      */
     private List<Flight> getFlights(String origin, String dest, LocalDate date) {
         FlightService fs = new FlightService();
-        return fs.getFlights(origin, dest, date);
+        
+        List flights = fs.getFlights(origin, dest, date);    
+        sortList(flights);   
+        return flights;
     }
 
     /**
@@ -186,10 +220,11 @@ public class FlightsUIController implements Initializable {
      */
     private void setFlightResultsTable(List<Flight> flights) {
         data.clear();
-
+        
         flights.forEach((flight) -> {
             data.add(flight);
         });
+        
         flightResults.setItems(data);
         airlineColumn.setCellValueFactory(new PropertyValueFactory<>("airline"));
         flightNumberColumn.setCellValueFactory(new PropertyValueFactory<>("flightNumber"));
@@ -204,6 +239,7 @@ public class FlightsUIController implements Initializable {
         arrivalColumn.setCellValueFactory(new PropertyValueFactory<>("arrival"));
         handluggagePriceColumn.setCellValueFactory(new PropertyValueFactory<>("handLuggagePrice"));
         luggagePriceColumn.setCellValueFactory(new PropertyValueFactory<>("luggagePrice"));
+        
 
     }
 
