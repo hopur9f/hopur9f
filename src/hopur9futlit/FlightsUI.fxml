@@ -17,12 +17,12 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane id="AnchorPane" prefHeight="523.0" prefWidth="1035.0" styleClass="mainFxmlClass" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="hopur9futlit.FlightsUIController">
+<AnchorPane id="AnchorPane" prefHeight="523.0" prefWidth="1062.0" styleClass="mainFxmlClass" xmlns="http://javafx.com/javafx/9.0.4" xmlns:fx="http://javafx.com/fxml/1" fx:controller="hopur9futlit.FlightsUIController">
     <stylesheets>
         <URL value="@/CSS/flightsui.css" />
     </stylesheets>
    <children>
-      <MenuBar prefHeight="37.0" prefWidth="1035.0">
+      <MenuBar prefHeight="37.0" prefWidth="1067.0">
         <menus>
           <Menu mnemonicParsing="false" text="Hjálp">
             <items>
@@ -37,13 +37,13 @@
             <VBox prefHeight="92.0" prefWidth="258.0">
                <children>
                   <Label prefHeight="32.0" prefWidth="129.0" text="Brottfararstaður:" />
-                  <TextField fx:id="origin" prefHeight="37.0" prefWidth="437.0" text="Reykjavík" />
+                  <TextField fx:id="origin" prefHeight="37.0" prefWidth="437.0" />
                </children>
             </VBox>
             <VBox prefHeight="92.0" prefWidth="258.0">
                <children>
                   <Label prefHeight="32.0" prefWidth="129.0" text="Áfangastaður:" />
-                  <TextField fx:id="destination" prefHeight="37.0" prefWidth="258.0" text="Akureyri" />
+                  <TextField fx:id="destination" prefHeight="37.0" prefWidth="258.0" />
                </children>
             </VBox>
          </children>
@@ -51,29 +51,34 @@
             <Insets left="15.0" />
          </padding>
       </HBox>
-      <HBox layoutX="547.0" layoutY="37.0" prefHeight="115.0" prefWidth="354.0">
+      <HBox layoutX="544.0" layoutY="37.0" prefHeight="76.0" prefWidth="443.0">
          <children>
             <VBox prefHeight="153.0" prefWidth="111.0">
                <children>
                   <Label prefHeight="32.0" prefWidth="129.0" text="Fjöldi barna: " />
-                  <Spinner fx:id="numChildren" editable="true" prefHeight="37.0" prefWidth="102.0" />
+                  <Spinner fx:id="numChildren" editable="true" prefHeight="37.0" prefWidth="111.0" />
                </children>
             </VBox>
             <VBox prefHeight="153.0" prefWidth="114.0">
                <children>
                   <Label prefHeight="32.0" prefWidth="129.0" text="Fjöldi fullorðina:" />
-                  <Spinner fx:id="numAdults" editable="true" prefHeight="37.0" prefWidth="100.0" />
+                  <Spinner fx:id="numAdults" editable="true" prefHeight="37.0" prefWidth="113.0">
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin></Spinner>
                </children>
+               <HBox.margin>
+                  <Insets left="10.0" right="10.0" />
+               </HBox.margin>
             </VBox>
-            <VBox prefHeight="153.0" prefWidth="134.0">
+            <VBox prefHeight="108.0" prefWidth="133.0">
                <children>
                   <Label prefHeight="31.0" prefWidth="108.0" text="Dagsetning flugs:" />
-                  <DatePicker fx:id="date" prefHeight="37.0" prefWidth="131.0" />
+                  <DatePicker fx:id="date" prefHeight="39.0" prefWidth="133.0" />
                </children>
             </VBox>
          </children>
       </HBox>
-      <Button fx:id="search" layoutX="926.0" layoutY="64.0" mnemonicParsing="false" onAction="#searchActionPerformed" prefHeight="44.0" prefWidth="91.0" text="Leita" />
       <HBox layoutX="14.0" layoutY="230.0" prefHeight="32.0" prefWidth="482.0">
          <children>
             <Label text="Raða eftir:">
@@ -85,32 +90,31 @@
                   <Insets left="5.0" />
                </padding>
             </RadioButton>
-            <RadioButton fx:id="timeSort" mnemonicParsing="false" text="Styðsti tími">
+            <RadioButton fx:id="timeSort" mnemonicParsing="false" text="Stysti tími">
                <padding>
                   <Insets left="10.0" />
                </padding>
             </RadioButton>
          </children>
       </HBox>
-      <VBox fx:id="errorValidationVbox" layoutX="16.0" layoutY="113.0" prefHeight="102.0" prefWidth="1005.0" />
-      <TableView fx:id="flightResults" editable="true" layoutX="14.0" layoutY="262.0" prefHeight="200.0" prefWidth="1005.0">
+      <VBox fx:id="errorValidationVbox" layoutX="16.0" layoutY="113.0" prefHeight="102.0" prefWidth="1038.0" />
+      <TableView fx:id="flightResults" editable="true" layoutX="14.0" layoutY="262.0" prefHeight="200.0" prefWidth="1038.0">
         <columns>
-            <TableColumn fx:id="airlineColumn" prefWidth="75.0" text="Airline" />
-            <TableColumn fx:id="flightNumberColumn" prefWidth="75.0" text="Flightnumber" />
-            <TableColumn fx:id="originColumn" prefWidth="75.0" text="Origin" />
-            <TableColumn fx:id="destinationColumn" prefWidth="75.0" text="Destination" />
-          <TableColumn fx:id="adultPriceColumn" prefWidth="75.0" text="Adult Price" />
-          <TableColumn fx:id="childPriceColumn" prefWidth="75.0" text="Child Price" />
-            <TableColumn fx:id="durationColumn" prefWidth="75.0" text="Duration" />
-            <TableColumn fx:id="departureColumn" prefWidth="75.0" text="Departure" />
-            <TableColumn fx:id="arrivalColumn" prefWidth="75.0" text="Arrival" />
-            <TableColumn fx:id="disabilityColumn" prefWidth="75.0" text="Disability Access" />
-            <TableColumn fx:id="animalColumn" prefWidth="95.0" text="Animal Transfer" />
-            <TableColumn fx:id="handluggagePriceColumn" prefWidth="76.0" text="Handluggage Price" />
-            <TableColumn fx:id="luggagePriceColumn" prefWidth="83.0" text="Luggage Price" />
+            <TableColumn fx:id="airlineColumn" prefWidth="104.0" text="Flugfélag" />
+            <TableColumn fx:id="flightNumberColumn" text="Flugnúmer" />
+            <TableColumn fx:id="originColumn" prefWidth="110.00003051757812" text="Brottfararstaður" />
+            <TableColumn fx:id="destinationColumn" prefWidth="102.0" text="Áfangastaður" />
+          <TableColumn fx:id="adultPriceColumn" prefWidth="96.0" text="Verð fullorðin" />
+          <TableColumn fx:id="childPriceColumn" prefWidth="82.0" text="Verð börn" />
+            <TableColumn fx:id="durationColumn" minWidth="5.0" prefWidth="67.0" text="Flugtími" />
+            <TableColumn fx:id="departureColumn" prefWidth="104.0" text="Brottfarartími" />
+            <TableColumn fx:id="arrivalColumn" prefWidth="85.0" text="Komutími" />
+            <TableColumn fx:id="disabilityColumn" prefWidth="107.0" text="Aðgengi fatlaðra" />
+            <TableColumn fx:id="animalColumn" prefWidth="100.0" text="Dýraflutningar" />
         </columns>
       </TableView>
       <Button fx:id="bookingButton" layoutX="14.0" layoutY="469.0" mnemonicParsing="false" onAction="#bookingButtonActionPerformed" prefHeight="44.0" prefWidth="206.0" text="Bóka flug" />
+      <Button fx:id="search" layoutX="944.0" layoutY="64.0" mnemonicParsing="false" onAction="#searchActionPerformed" prefHeight="44.0" prefWidth="108.0" text="Leita" />
       <!--<fx:include fx:id="BookingDialog" source="BookingUI.fxml" />-->
    </children>
 </AnchorPane>

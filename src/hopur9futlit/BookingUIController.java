@@ -49,6 +49,9 @@ public class BookingUIController implements Initializable {
     List<String> availableSeats;
     @FXML
     private ScrollPane scroll;
+    
+    int handLuggagePrice;
+    int luggagePrice;
 
     BookingUIController(Flight flight, int numberAdult, int numberChildren) {
         this.flight = flight;
@@ -57,6 +60,8 @@ public class BookingUIController implements Initializable {
         this.numberPassenger = numberAdult + numberChildren;
         this.totalPrice = this.flight.getAdultPrice() + this.flight.getChildPrice();
         this.availableSeats = this.flight.getAvailableSeatList();
+        this.handLuggagePrice = this.flight.getHandLuggagePrice();
+        this.luggagePrice = this.flight.getLuggagePrice();
     }
 
     @FXML
@@ -120,11 +125,15 @@ public class BookingUIController implements Initializable {
             for(String part: parts) {
                 availableSeatsInput.getItems().addAll(part);
             }
+            Label handLuggagePriceLabel = new Label("Verð fyrir handfarangur: " + String.valueOf(handLuggagePrice) + " kr.");
+            handLuggagePriceLabel.getStyleClass().add("element");
             Label numBags = new Label("Töskufjöldi: ");
             Spinner numBagsInput = new Spinner();
             numBagsInput.setId("numBags");
             SpinnerValueFactory<Integer> numBagsfactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 100, 1);
             numBagsInput.setValueFactory(numBagsfactory);
+            Label luggagePriceLabel = new Label("Verð fyrir farangur: " + String.valueOf(luggagePrice) + " kr.");
+            luggagePriceLabel.getStyleClass().add("element");
             Label numHandBags = new Label("Fjöldi í handfarangri: ");
             Spinner numHandBagsInput = new Spinner();
             numHandBagsInput.setId("numHandBags");
@@ -134,8 +143,8 @@ public class BookingUIController implements Initializable {
             //útfæra sætisfjölda
             vBoxContainer.getChildren().addAll(grownUp, lastName, lastnameInput,
                     firstName, firstnameInput, email, emailInput, birthdate, datepicker,
-                    nationality, nationalityInput, availableSeatsLabel, availableSeatsInput, numBags,
-                    numBagsInput, numHandBags, numHandBagsInput);
+                    nationality, nationalityInput, availableSeatsLabel, availableSeatsInput, luggagePriceLabel, numBags,
+                    numBagsInput, handLuggagePriceLabel, numHandBags, numHandBagsInput);
             information.getChildren().add(vBoxContainer);
         }
 
