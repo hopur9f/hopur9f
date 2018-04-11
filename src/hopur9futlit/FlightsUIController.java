@@ -9,6 +9,7 @@ import hopur9fvinnsla.Flight;
 import hopur9fvinnsla.FlightService;
 import java.net.URL;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -41,7 +42,9 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.util.StringConverter;
 
@@ -50,10 +53,13 @@ import javafx.util.StringConverter;
  *
  * @author astalara
  */
+
+
+
 public class FlightsUIController implements Initializable {
 
     @FXML
-    private Label errorValidation;
+    private VBox errorValidationVbox;
     @FXML
     private TextField origin;
     @FXML
@@ -98,6 +104,7 @@ public class FlightsUIController implements Initializable {
     private ObservableList<Flight> data = FXCollections.observableArrayList();
     @FXML
     private Button bookingButton;
+
     
     final ToggleGroup group = new ToggleGroup();
     @FXML
@@ -105,11 +112,15 @@ public class FlightsUIController implements Initializable {
     @FXML
     private RadioButton timeSort;
 
+
+ 
+
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        
         SpinnerValueFactory<Integer> numAdultsfactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 100, 1);
         numAdults.setValueFactory(numAdultsfactory);
 
@@ -167,7 +178,6 @@ public class FlightsUIController implements Initializable {
 
     @FXML
     private void exitActionPerformed(ActionEvent event) {
-        System.out.println("Ég fór inn í exit");
         Alert alert = new Alert(AlertType.CONFIRMATION);
         alert.setTitle("Hætta");
         alert.setContentText("Ertu viss um að þú viljir hætta");
@@ -223,45 +233,58 @@ public class FlightsUIController implements Initializable {
         
         flights.forEach((flight) -> {
             data.add(flight);
+            
         });
-        
-        flightResults.setItems(data);
-        airlineColumn.setCellValueFactory(new PropertyValueFactory<>("airline"));
-        flightNumberColumn.setCellValueFactory(new PropertyValueFactory<>("flightNumber"));
-        originColumn.setCellValueFactory(new PropertyValueFactory<>("origin"));
-        destinationColumn.setCellValueFactory(new PropertyValueFactory<>("destination"));
-        adultPriceColumn.setCellValueFactory(new PropertyValueFactory<>("adultPrice"));
-        childPriceColumn.setCellValueFactory(new PropertyValueFactory<>("childPrice"));
-        durationColumn.setCellValueFactory(new PropertyValueFactory<>("duration"));
-        disabilityColumn.setCellValueFactory(new PropertyValueFactory<>("disabilityAccess"));
-        animalColumn.setCellValueFactory(new PropertyValueFactory<>("animalTransfer"));
-        departureColumn.setCellValueFactory(new PropertyValueFactory<>("departure"));
-        arrivalColumn.setCellValueFactory(new PropertyValueFactory<>("arrival"));
-        handluggagePriceColumn.setCellValueFactory(new PropertyValueFactory<>("handLuggagePrice"));
-        luggagePriceColumn.setCellValueFactory(new PropertyValueFactory<>("luggagePrice"));
-        
+      
+        if(data.isEmpty()) {
+            Label noFlightsLabel = new Label("Engin flug fundust fyrir þína leit.");
+            errorValidationVbox.getChildren().add(noFlightsLabel);
+        } else {
+            flightResults.setItems(data);
+            airlineColumn.setCellValueFactory(new PropertyValueFactory<>("airline"));
+            flightNumberColumn.setCellValueFactory(new PropertyValueFactory<>("flightNumber"));
+            originColumn.setCellValueFactory(new PropertyValueFactory<>("origin"));
+            destinationColumn.setCellValueFactory(new PropertyValueFactory<>("destination"));
+            adultPriceColumn.setCellValueFactory(new PropertyValueFactory<>("adultPrice"));
+            childPriceColumn.setCellValueFactory(new PropertyValueFactory<>("childPrice"));
+            durationColumn.setCellValueFactory(new PropertyValueFactory<>("duration"));
+            disabilityColumn.setCellValueFactory(new PropertyValueFactory<>("disabilityAccess"));
+            animalColumn.setCellValueFactory(new PropertyValueFactory<>("animalTransfer"));
+            departureColumn.setCellValueFactory(new PropertyValueFactory<>("departure"));
+            arrivalColumn.setCellValueFactory(new PropertyValueFactory<>("arrival"));
+            handluggagePriceColumn.setCellValueFactory(new PropertyValueFactory<>("handLuggagePrice"));
+            luggagePriceColumn.setCellValueFactory(new PropertyValueFactory<>("luggagePrice"));
+        }
+
 
     }
 
     @FXML
     private void bookingButtonActionPerformed(ActionEvent event) throws Exception {
+        errorValidationVbox.getChildren().clear();
         Flight flight = (Flight) flightResults.getSelectionModel().getSelectedItem();
         int numberAdults = numAdults.getValue();
         int numberChildren = numChildren.getValue();
-        BookingUIController bookingController
-                = new BookingUIController(flight, numberAdults, numberChildren );
-        System.out.println("Booking Controller" + bookingController);
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("BookingUI.fxml"));
-        fxmlLoader.setController(bookingController);
-        Parent root1 = (Parent) fxmlLoader.load();
-        Stage stage = new Stage();
-        stage.setScene(new Scene(root1));
-        stage.show();
+        if (flight == null) {
+            String errorString = "Vinsamlegast veljið flug.";
+            Label errorLabel = new Label(errorString);
+            errorValidationVbox.getChildren().add(errorLabel);
+        } else {
+            BookingUIController bookingController
+                    = new BookingUIController(flight, numberAdults, numberChildren);
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("BookingUI.fxml"));
+            fxmlLoader.setController(bookingController);
+            Parent root1 = (Parent) fxmlLoader.load();
+            Stage stage = new Stage();
+            stage.setScene(new Scene(root1));
+            stage.show();
+        }
+
     }
 
     @FXML
     private void searchActionPerformed(ActionEvent event) {
-
+        errorValidationVbox.getChildren().clear();
         String originValue = origin.getText();
         String destinationValue = destination.getText();
         int numAdultsValue = numAdults.getValue();
@@ -271,16 +294,45 @@ public class FlightsUIController implements Initializable {
         List<String> validation = errorValidation(originValue, destinationValue, numAdultsValue, numChildrenValue, dateValue);
 
         if (validation.size() > 0) {
-            errorValidation.setText("errors");
+            validation.forEach((errorString) -> {
+                Label errorLabel = new Label(errorString);
+                errorValidationVbox.getChildren().add(errorLabel);
+            });
         } else {
             List<Flight> flights = this.getFlights(originValue, destinationValue, dateValue);
             this.setFlightResultsTable(flights);
         }
 
     }
+    
+    public boolean isBeforeToday(LocalDate dateValue) {
+        Date now = new Date();
+        LocalDate nowDate = now.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        if(dateValue.isBefore(nowDate)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
     private List<String> errorValidation(String originValue, String destinationValue, int numAdultsValue, int numChildrenValue, LocalDate dateValue) {
         List<String> validation = new ArrayList();
+        
+        if("".equals(originValue)) {
+            validation.add("Vinsamlegast tilgreinið brottfararstað.");
+        }
+        if("".equals(destinationValue)) {
+            validation.add("Vinsamlegast tilgreinið áfangastað.");
+        }
+        if(numAdultsValue + numChildrenValue < 1) {
+            validation.add("Vinsamlegst tilgreinið fjölda fullorðinna og barna þannig að farþegar séu fleiri en 0.");
+        }
+        if(dateValue == null) {
+            validation.add("Vinsamlegast tilgreinið dagsetningu.");
+        }
+        if(isBeforeToday(dateValue)) {
+            validation.add("Vinsamlegast veljið dagsetningu sem ekki er liðin.");
+        }
         return validation;
     }
 

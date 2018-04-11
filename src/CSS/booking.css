@@ -5,8 +5,11 @@
 .mainFxmlClass {
     -fx-max-width: 500;
 }
+.H1 {
+    -fx-font-size: 25;
+}
 .Header {
-    -fx-font-size: 20;
+    -fx-font-size: 15;
     -fx-padding: 10 0 10 0;
 }
 
@@ -14,4 +17,10 @@
     -fx-padding: 10;
     -fx-spacing: 10;
 }
- 
+.payment {
+    -fx-font-size: 14;
+    -fx-padding: 10 0 10 0;
+}
+.element {
+    -fx-padding: 5 0 5 0;
+}
