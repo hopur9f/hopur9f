@@ -138,7 +138,6 @@ public class FlightsUIController implements Initializable {
 
     @FXML
     private void exitActionPerformed(ActionEvent event) {
-        System.out.println("Ég fór inn í exit");
         Alert alert = new Alert(AlertType.CONFIRMATION);
         alert.setTitle("Hætta");
         alert.setContentText("Ertu viss um að þú viljir hætta");
@@ -192,7 +191,6 @@ public class FlightsUIController implements Initializable {
 
         flights.forEach((flight) -> {
             data.add(flight);
-            System.out.println("flight duration: " + flight.getDuration());
         });
         flightResults.setItems(data);
       
