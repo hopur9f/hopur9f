@@ -3,12 +3,12 @@
 <?import java.net.URL?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.Spinner?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
@@ -17,7 +17,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane id="AnchorPane" prefHeight="523.0" prefWidth="1035.0" styleClass="mainFxmlClass" xmlns="http://javafx.com/javafx/9.0.4" xmlns:fx="http://javafx.com/fxml/1" fx:controller="hopur9futlit.FlightsUIController">
+<AnchorPane id="AnchorPane" prefHeight="523.0" prefWidth="1035.0" styleClass="mainFxmlClass" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="hopur9futlit.FlightsUIController">
     <stylesheets>
         <URL value="@/CSS/flightsui.css" />
     </stylesheets>
@@ -74,17 +74,22 @@
          </children>
       </HBox>
       <Button fx:id="search" layoutX="926.0" layoutY="64.0" mnemonicParsing="false" onAction="#searchActionPerformed" prefHeight="44.0" prefWidth="91.0" text="Leita" />
-      <HBox layoutX="14.0" layoutY="230.0" prefHeight="32.0" prefWidth="293.0">
+      <HBox layoutX="14.0" layoutY="230.0" prefHeight="32.0" prefWidth="482.0">
          <children>
             <Label text="Raða eftir:">
                <padding>
                   <Insets right="5.0" />
                </padding></Label>
-            <CheckBox mnemonicParsing="false" text="Lægsta Verði">
+            <RadioButton fx:id="priceSort" mnemonicParsing="false" selected="true" text="Lægsta verði">
                <padding>
-                  <Insets right="5.0" />
-               </padding></CheckBox>
-            <CheckBox mnemonicParsing="false" text="Styðsti tími" />
+                  <Insets left="5.0" />
+               </padding>
+            </RadioButton>
+            <RadioButton fx:id="timeSort" mnemonicParsing="false" text="Styðsti tími">
+               <padding>
+                  <Insets left="10.0" />
+               </padding>
+            </RadioButton>
          </children>
       </HBox>
       <VBox fx:id="errorValidationVbox" layoutX="16.0" layoutY="113.0" prefHeight="102.0" prefWidth="1005.0" />
