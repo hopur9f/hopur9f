@@ -17,6 +17,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
@@ -52,6 +53,8 @@ public class BookingUIController implements Initializable {
     
     int handLuggagePrice;
     int luggagePrice;
+    
+    boolean wasValidated = false; //Knows if information given has been validated
 
     BookingUIController(Flight flight, int numberAdult, int numberChildren) {
         this.flight = flight;
@@ -178,7 +181,7 @@ public class BookingUIController implements Initializable {
         TextField csvInput = new TextField();
         csvInput.setId("csv");
         csvInput.setMaxWidth(50);
-        payment.getChildren().addAll( paymentLabel, totalPriceLabel, cardNumber, cardNumberInput, exp, expMonthInput, expYearInput, csv, csvInput);
+        payment.getChildren().addAll( paymentLabel, totalPriceLabel, cardHolder,  cardHolderInput, cardNumber, cardNumberInput, exp, expMonthInput, expYearInput, csv, csvInput);
 
         confirmButton.setText("Staðfesta bókun");
         information.getChildren().addAll(payment, confirmButton);
@@ -252,9 +255,8 @@ public class BookingUIController implements Initializable {
                             for (String s : validation) {
                                 Label errorMessage = new Label(s);
                                 errorValidationVBox.getChildren().add(errorMessage);
-                                
                             }
-                            scroll.setVvalue(0.0);
+                            wasValidated = true;
                         }
                     }
 
@@ -304,9 +306,26 @@ public class BookingUIController implements Initializable {
                                 Label errorMessage = new Label(s);
                                 errorValidationVBox.getChildren().add(errorMessage);
                             }
-                            scroll.setVvalue(0.0);
+                            wasValidated = true;
                         }
                     }
+                    if(wasValidated) {
+                        scroll.setVvalue(0.0);
+                        wasValidated = false;
+                    } else {
+                        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                        alert.setTitle("Bókun móttekin");
+                        alert.setHeaderText("Bókun þín hefur verið móttekin");
+                        alert.setContentText("Þú hefur bókað flug. \n" 
+                                + "     Fjöldi farþega:" + (numberAdult+numberChildren) + "\n"
+                                + "     Brottför:" + flight.getOrigin() + " " 
+                                + flight.getDeparture() + " " + flight.getDeparture().getTime() + "\n"
+                                + "     Koma:" + flight.getDestination() + " " 
+                                + flight.getArrival() + " " + flight.getArrival().getTime() + "\n"
+                                + "Bókunarnúmer þitt er Í GLOBALBREYTU");
+                        alert.showAndWait();
+                    }
+                    
 
                 });
                 
