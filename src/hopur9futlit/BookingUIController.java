@@ -18,14 +18,20 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.Dialog;
+import javafx.scene.control.DialogPane;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
 
 /**
  * FXML Controller class
@@ -40,6 +46,9 @@ public class BookingUIController implements Initializable {
     int numberChildren;
     int numberPassenger;
     int totalPrice;
+    List<String> availableSeats;
+    @FXML
+    private ScrollPane scroll;
 
     BookingUIController(Flight flight, int numberAdult, int numberChildren) {
         this.flight = flight;
@@ -47,15 +56,14 @@ public class BookingUIController implements Initializable {
         this.numberChildren = numberChildren;
         this.numberPassenger = numberAdult + numberChildren;
         this.totalPrice = this.flight.getAdultPrice() + this.flight.getChildPrice();
+        this.availableSeats = this.flight.getAvailableSeatList();
     }
 
     @FXML
     private VBox information;
 
-    @FXML
     private VBox errorValidationVBox = new VBox();
 
-    @FXML
     private Label totalPriceLabel = new Label();
 
     /**
@@ -63,10 +71,16 @@ public class BookingUIController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        String available = availableSeats.get(0);
+        String[] parts = available.split(";");
+       
         information.getStyleClass().add("informationStyle");
+        Label bookingHeader = new Label("Bókun");
+        
+        bookingHeader.getStyleClass().add("H1");
+        
         errorValidationVBox.setId("errorValidation");
-        totalPriceLabel.setText("Heildarverð: " + String.valueOf(this.totalPrice));
-        information.getChildren().addAll(totalPriceLabel, errorValidationVBox);
+        information.getChildren().addAll(bookingHeader, errorValidationVBox);
 
         for (int i = 1; i <= numberPassenger; i++) {
             VBox vBoxContainer = new VBox();
@@ -74,25 +88,38 @@ public class BookingUIController implements Initializable {
             Label grownUp = new Label("Upplýsingar um farþega " + i + " :");
             grownUp.getStyleClass().add("Header");
             Label lastName = new Label("Eftirnafn:");
+            lastName.getStyleClass().add("element");
             TextField lastnameInput = new TextField();
             lastnameInput.setId("lastname");
             lastnameInput.setMaxWidth(450);
             Label firstName = new Label("Fornafn: ");
+            firstName.getStyleClass().add("element");
             TextField firstnameInput = new TextField();
             firstnameInput.setId("firstname");
             firstnameInput.setMaxWidth(450);
             Label email = new Label("Netfang: ");
+            email.getStyleClass().add("element");
             TextField emailInput = new TextField();
             emailInput.setId("email");
             emailInput.setMaxWidth(450);
             Label birthdate = new Label("Fæðingardagur:");
+            birthdate.getStyleClass().add("element");
             DatePicker datepicker = new DatePicker();
             datepicker.setId("datepicker");
             Label nationality = new Label("Þjóðerni:");
+            nationality.getStyleClass().add("element");
             ComboBox nationalityInput = new ComboBox();
             nationalityInput.getItems().addAll("Ísland", "Noregur", "Danmörk", "Svíþjóð", "Færeyjar", "Grænland");
             nationalityInput.setValue("Þjóðerni");
             nationalityInput.setId("nationality");
+            Label availableSeatsLabel = new Label("Laus sæti:");
+            availableSeatsLabel.getStyleClass().add("element");
+            ComboBox availableSeatsInput = new ComboBox();
+            availableSeatsInput.setId("availableSeats");
+            availableSeatsInput.setValue("Veldu sæti");
+            for(String part: parts) {
+                availableSeatsInput.getItems().addAll(part);
+            }
             Label numBags = new Label("Töskufjöldi: ");
             Spinner numBagsInput = new Spinner();
             numBagsInput.setId("numBags");
@@ -106,7 +133,8 @@ public class BookingUIController implements Initializable {
 
             //útfæra sætisfjölda
             vBoxContainer.getChildren().addAll(grownUp, lastName, lastnameInput,
-                    firstName, firstnameInput, email, emailInput, birthdate, datepicker, nationality, nationalityInput, numBags,
+                    firstName, firstnameInput, email, emailInput, birthdate, datepicker,
+                    nationality, nationalityInput, availableSeatsLabel, availableSeatsInput, numBags,
                     numBagsInput, numHandBags, numHandBagsInput);
             information.getChildren().add(vBoxContainer);
         }
@@ -114,15 +142,20 @@ public class BookingUIController implements Initializable {
         VBox payment = new VBox();
         payment.setId("payment");
         Label paymentLabel = new Label("Greiðsluupplýsingar:");
+        totalPriceLabel.setText("Heildarverð: " + String.valueOf(this.totalPrice));
         paymentLabel.getStyleClass().add("Header");
+        totalPriceLabel.getStyleClass().add("payment");
         Label cardHolder = new Label("Korthafi:");
+        cardHolder.getStyleClass().add("element");
         TextField cardHolderInput = new TextField();
         cardHolderInput.setId("cardHolder");
         Label cardNumber = new Label("Kortanúmer:");
+        cardNumber.getStyleClass().add("element");
         TextField cardNumberInput = new TextField();
         cardNumberInput.setId("cardNumber");
         cardNumberInput.setMaxWidth(450);
         Label exp = new Label("Gildistími:");
+        exp.getStyleClass().add("element");
         ComboBox expMonthInput = new ComboBox();
         expMonthInput.getItems().addAll("01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12");
         expMonthInput.setValue("Dagur");
@@ -132,10 +165,11 @@ public class BookingUIController implements Initializable {
         expYearInput.setValue("Ár");
         expYearInput.setId("expYear");
         Label csv = new Label("Csv:");
+        csv.getStyleClass().add("element");
         TextField csvInput = new TextField();
         csvInput.setId("csv");
         csvInput.setMaxWidth(50);
-        payment.getChildren().addAll(paymentLabel, cardNumber, cardNumberInput, exp, expMonthInput, expYearInput, csv, csvInput);
+        payment.getChildren().addAll( paymentLabel, totalPriceLabel, cardNumber, cardNumberInput, exp, expMonthInput, expYearInput, csv, csvInput);
 
         confirmButton.setText("Staðfesta bókun");
         information.getChildren().addAll(payment, confirmButton);
@@ -159,6 +193,7 @@ public class BookingUIController implements Initializable {
                         LocalDate birthDay = LocalDate.now();
                         String numBagsString = "";
                         String numHandBagsString = "";
+                        String availableSeatsString = "";
                         //Loop through UI elements inside passenger VBox.
                         for (Node node : ((VBox) vBox).getChildren()) {
                             String id = node.getId();
@@ -185,6 +220,8 @@ public class BookingUIController implements Initializable {
                                     case "numHandBags":
                                         numHandBagsString = ((Spinner) node).getValue().toString();
                                         break;
+                                    case "availableSeats":
+                                        availableSeatsString = ((ComboBox) node).getValue().toString();
                                     default:
                                         break;
                                 }
@@ -197,6 +234,7 @@ public class BookingUIController implements Initializable {
                         System.out.println("Birthday: " + birthDay);
                         System.out.println("Number of luggage: " + numBagsString);
                         System.out.println("Number of hand luggage: " + numHandBagsString);
+                        System.out.println("Choosen seat" + availableSeatsString);
 
                         //Display error validation for passenger info.
                         List<String> validation = validatePassenger(firstname, lastname, email, nationality, birthDay, passengerNr);
@@ -205,6 +243,7 @@ public class BookingUIController implements Initializable {
                             for (String s : validation) {
                                 Label errorMessage = new Label(s);
                                 errorValidationVBox.getChildren().add(errorMessage);
+                                scroll.setVvalue(0.0);
                             }
                         }
                     }

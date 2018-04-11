@@ -35,6 +35,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -93,12 +94,13 @@ public class FlightsUIController implements Initializable {
     private ObservableList<Flight> data = FXCollections.observableArrayList();
     @FXML
     private Button bookingButton;
-
+ 
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        
         SpinnerValueFactory<Integer> numAdultsfactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 100, 1);
         numAdults.setValueFactory(numAdultsfactory);
 
@@ -190,8 +192,10 @@ public class FlightsUIController implements Initializable {
 
         flights.forEach((flight) -> {
             data.add(flight);
+            System.out.println("flight duration: " + flight.getDuration());
         });
         flightResults.setItems(data);
+      
         airlineColumn.setCellValueFactory(new PropertyValueFactory<>("airline"));
         flightNumberColumn.setCellValueFactory(new PropertyValueFactory<>("flightNumber"));
         originColumn.setCellValueFactory(new PropertyValueFactory<>("origin"));
@@ -221,7 +225,6 @@ public class FlightsUIController implements Initializable {
         } else {
             BookingUIController bookingController
                     = new BookingUIController(flight, numberAdults, numberChildren);
-            System.out.println("Booking Controller" + bookingController);
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("BookingUI.fxml"));
             fxmlLoader.setController(bookingController);
             Parent root1 = (Parent) fxmlLoader.load();
