@@ -96,10 +96,10 @@ public class FlightsUIController implements Initializable {
     private TableColumn<Flight, Date> departureColumn;
     @FXML
     private TableColumn<Flight, Date> arrivalColumn;
-    @FXML
+   /* @FXML
     private TableColumn<Flight, Integer> handluggagePriceColumn;
     @FXML
-    private TableColumn<Flight, Integer> luggagePriceColumn;
+    private TableColumn<Flight, Integer> luggagePriceColumn;*/
 
     private ObservableList<Flight> data = FXCollections.observableArrayList();
     @FXML
@@ -252,8 +252,8 @@ public class FlightsUIController implements Initializable {
             animalColumn.setCellValueFactory(new PropertyValueFactory<>("animalTransfer"));
             departureColumn.setCellValueFactory(new PropertyValueFactory<>("departure"));
             arrivalColumn.setCellValueFactory(new PropertyValueFactory<>("arrival"));
-            handluggagePriceColumn.setCellValueFactory(new PropertyValueFactory<>("handLuggagePrice"));
-            luggagePriceColumn.setCellValueFactory(new PropertyValueFactory<>("luggagePrice"));
+            //handluggagePriceColumn.setCellValueFactory(new PropertyValueFactory<>("handLuggagePrice"));
+           // luggagePriceColumn.setCellValueFactory(new PropertyValueFactory<>("luggagePrice"));
         }
 
 
