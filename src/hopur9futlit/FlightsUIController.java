@@ -9,6 +9,7 @@ import hopur9fvinnsla.Flight;
 import hopur9fvinnsla.FlightService;
 import java.net.URL;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
@@ -192,21 +193,26 @@ public class FlightsUIController implements Initializable {
         flights.forEach((flight) -> {
             data.add(flight);
         });
-        flightResults.setItems(data);
       
-        airlineColumn.setCellValueFactory(new PropertyValueFactory<>("airline"));
-        flightNumberColumn.setCellValueFactory(new PropertyValueFactory<>("flightNumber"));
-        originColumn.setCellValueFactory(new PropertyValueFactory<>("origin"));
-        destinationColumn.setCellValueFactory(new PropertyValueFactory<>("destination"));
-        adultPriceColumn.setCellValueFactory(new PropertyValueFactory<>("adultPrice"));
-        childPriceColumn.setCellValueFactory(new PropertyValueFactory<>("childPrice"));
-        durationColumn.setCellValueFactory(new PropertyValueFactory<>("duration"));
-        disabilityColumn.setCellValueFactory(new PropertyValueFactory<>("disabilityAccess"));
-        animalColumn.setCellValueFactory(new PropertyValueFactory<>("animalTransfer"));
-        departureColumn.setCellValueFactory(new PropertyValueFactory<>("departure"));
-        arrivalColumn.setCellValueFactory(new PropertyValueFactory<>("arrival"));
-        handluggagePriceColumn.setCellValueFactory(new PropertyValueFactory<>("handLuggagePrice"));
-        luggagePriceColumn.setCellValueFactory(new PropertyValueFactory<>("luggagePrice"));
+        if(data.isEmpty()) {
+            Label noFlightsLabel = new Label("Engin flug fundust fyrir þína leit.");
+            errorValidationVbox.getChildren().add(noFlightsLabel);
+        } else {
+            flightResults.setItems(data);
+            airlineColumn.setCellValueFactory(new PropertyValueFactory<>("airline"));
+            flightNumberColumn.setCellValueFactory(new PropertyValueFactory<>("flightNumber"));
+            originColumn.setCellValueFactory(new PropertyValueFactory<>("origin"));
+            destinationColumn.setCellValueFactory(new PropertyValueFactory<>("destination"));
+            adultPriceColumn.setCellValueFactory(new PropertyValueFactory<>("adultPrice"));
+            childPriceColumn.setCellValueFactory(new PropertyValueFactory<>("childPrice"));
+            durationColumn.setCellValueFactory(new PropertyValueFactory<>("duration"));
+            disabilityColumn.setCellValueFactory(new PropertyValueFactory<>("disabilityAccess"));
+            animalColumn.setCellValueFactory(new PropertyValueFactory<>("animalTransfer"));
+            departureColumn.setCellValueFactory(new PropertyValueFactory<>("departure"));
+            arrivalColumn.setCellValueFactory(new PropertyValueFactory<>("arrival"));
+            handluggagePriceColumn.setCellValueFactory(new PropertyValueFactory<>("handLuggagePrice"));
+            luggagePriceColumn.setCellValueFactory(new PropertyValueFactory<>("luggagePrice"));
+        }
 
     }
 
@@ -245,19 +251,45 @@ public class FlightsUIController implements Initializable {
         List<String> validation = errorValidation(originValue, destinationValue, numAdultsValue, numChildrenValue, dateValue);
 
         if (validation.size() > 0) {
-            //Loop through errors and create Label for each error and add it to the errorValidationVbox.
-            String errorString = "Validation errors!";
-            Label errorLabel = new Label(errorString);
-            errorValidationVbox.getChildren().add(errorLabel);
+            validation.forEach((errorString) -> {
+                Label errorLabel = new Label(errorString);
+                errorValidationVbox.getChildren().add(errorLabel);
+            });
         } else {
             List<Flight> flights = this.getFlights(originValue, destinationValue, dateValue);
             this.setFlightResultsTable(flights);
         }
 
     }
+    
+    public boolean isBeforeToday(LocalDate dateValue) {
+        Date now = new Date();
+        LocalDate nowDate = now.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        if(dateValue.isBefore(nowDate)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
     private List<String> errorValidation(String originValue, String destinationValue, int numAdultsValue, int numChildrenValue, LocalDate dateValue) {
         List<String> validation = new ArrayList();
+        
+        if("".equals(originValue)) {
+            validation.add("Vinsamlegast tilgreinið brottfararstað.");
+        }
+        if("".equals(destinationValue)) {
+            validation.add("Vinsamlegast tilgreinið áfangastað.");
+        }
+        if(numAdultsValue + numChildrenValue < 1) {
+            validation.add("Vinsamlegst tilgreinið fjölda fullorðinna og barna þannig að farþegar séu fleiri en 0.");
+        }
+        if(dateValue == null) {
+            validation.add("Vinsamlegast tilgreinið dagsetningu.");
+        }
+        if(isBeforeToday(dateValue)) {
+            validation.add("Vinsamlegast veljið dagsetningu sem ekki er liðin.");
+        }
         return validation;
     }
 
