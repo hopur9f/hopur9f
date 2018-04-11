@@ -192,6 +192,7 @@ public class FlightsUIController implements Initializable {
 
         flights.forEach((flight) -> {
             data.add(flight);
+            
         });
       
         if(data.isEmpty()) {
