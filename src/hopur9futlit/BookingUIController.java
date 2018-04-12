@@ -172,10 +172,8 @@ public class BookingUIController implements Initializable {
         payment.setId("payment");
         Label paymentLabel = new Label("Greiðsluupplýsingar:");
 
-        totalPriceLabel.setText("Flugverð: " + String.valueOf(this.totalPrice));
+        totalPriceLabel.setText("Flugverð: " + String.valueOf(this.totalPrice) + "kr.");
         paymentLabel.getStyleClass().add("Header");
-
-        totalPriceLabel.setText("Heildarverð: " + String.valueOf(this.totalPrice));
         totalPriceLabel.getStyleClass().add("payment");
 
         Label cardHolder = new Label("Korthafi:");
