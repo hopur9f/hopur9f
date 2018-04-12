@@ -11,7 +11,9 @@ import java.net.URL;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.ResourceBundle;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -29,6 +31,7 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.FontWeight;
@@ -55,6 +58,8 @@ public class BookingUIController implements Initializable {
     int luggagePrice;
     
     boolean wasValidated = false; //Knows if information given has been validated
+    @FXML
+    private AnchorPane bookingUI;
 
     BookingUIController(Flight flight, int numberAdult, int numberChildren) {
         this.flight = flight;
@@ -79,9 +84,8 @@ public class BookingUIController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        String available = availableSeats.get(0);
-        String[] parts = available.split(";");
-       
+        System.out.println("availableSeats.size(): " + availableSeats.size());
+        
         information.getStyleClass().add("informationStyle");
         Label bookingHeader = new Label("Bókun");
         
@@ -125,8 +129,8 @@ public class BookingUIController implements Initializable {
             ComboBox availableSeatsInput = new ComboBox();
             availableSeatsInput.setId("availableSeats");
             availableSeatsInput.setValue("Veldu sæti");
-            for(String part: parts) {
-                availableSeatsInput.getItems().addAll(part);
+            for(int j = 0; j < availableSeats.size(); j++) {
+                availableSeatsInput.getItems().addAll(availableSeats.get(j));
             }
             Label handLuggagePriceLabel = new Label("Verð fyrir handfarangur: " + String.valueOf(handLuggagePrice) + " kr.");
             handLuggagePriceLabel.getStyleClass().add("element");
@@ -300,6 +304,7 @@ public class BookingUIController implements Initializable {
                         
                         //Display error validation for passenger info.
                         List<String> validation = validatePaymentInfo(cardHolder, cardNumber, csv);
+                        System.out.println("validCardNumber" + isValidCardNumber(cardNumber));
                         String errorString = "";
                         if (validation.size() > 0) {
                             for (String s : validation) {
@@ -309,7 +314,9 @@ public class BookingUIController implements Initializable {
                             wasValidated = true;
                         }
                     }
-                    if(wasValidated) {
+
+                });
+                if(wasValidated) {
                         scroll.setVvalue(0.0);
                         wasValidated = false;
                     } else {
@@ -323,11 +330,14 @@ public class BookingUIController implements Initializable {
                                 + "     Koma:" + flight.getDestination() + " " 
                                 + flight.getArrival() + " " + flight.getArrival().getTime() + "\n"
                                 + "Bókunarnúmer þitt er Í GLOBALBREYTU");
-                        alert.showAndWait();
+                        
+          
+                        Optional<ButtonType> result = alert.showAndWait();
+                        if(result.get() == ButtonType.OK) {
+                            Platform.exit();
+                        }
+                        
                     }
-                    
-
-                });
                 
             }
         });
@@ -341,8 +351,8 @@ public class BookingUIController implements Initializable {
         return m.matches();
     }
 
-    public boolean isValidCardNumber(String cardNumber) {
-        String ePattern = "^(?:4[0-9]{12}(?:[0-9]{3})?|[25][1-7][0-9]{14}|6(?:011|5[0-9][0-9])[0-9]{12}|3[47][0-9]{13}|3(?:0[0-5]|[68][0-9])[0-9]{11}|(?:2131|1800|35\\d{3})\\d{11})$";
+     public boolean isValidCardNumber(String cardNumber) {
+        String ePattern = "^(\\d{4})([-])(\\d{4})([-])(\\d{4})([-])(\\d{4})$";
         java.util.regex.Pattern p = java.util.regex.Pattern.compile(ePattern);
         java.util.regex.Matcher m = p.matcher(cardNumber);
         return m.matches();
