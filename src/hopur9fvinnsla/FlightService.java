@@ -10,6 +10,7 @@ import java.net.URISyntaxException;
 import java.sql.Array;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -20,8 +21,9 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * This class is Service class for Flights. 
- * Sends queries to the table Flights in the database.
+ * This class is Service class for Flights. Sends queries to the table Flights
+ * in the database.
+ *
  * @author Hópur 9F
  */
 public class FlightService {
@@ -51,16 +53,17 @@ public class FlightService {
 
     /**
      * Gets flights from the flights table in the database.
+     *
      * @param origin Origin of the flight.
      * @param dest Destination of the flight.
      * @param date The departure of the flight.
-     * @return 
+     * @return
      */
     public List<Flight> getFlights(String origin, String dest, LocalDate date) {
         List<Flight> flights = new ArrayList<Flight>();
         Connection conn = null;
         Statement stmt = null;
-        
+
         try {
             conn = this.getConnection();
             stmt = conn.createStatement();
@@ -82,6 +85,7 @@ public class FlightService {
                 int childPrice = rs.getInt("childPrice");
                 Date departure = rs.getDate("departure");
                 Date arrival = rs.getDate("arrival");
+                int duration = rs.getInt("duration");
                 int handLuggagePrice = rs.getInt("handluggageprice");
                 int luggagePrice = rs.getInt("luggagePrice");
                 boolean disabilityAccess = rs.getBoolean("disabilityaccess");
@@ -89,9 +93,10 @@ public class FlightService {
                 Array availableSeatListArray = rs.getArray("availableseatlist");
                 //Set availableSeatList on correct form.
                 String[] availableSeatListString = (String[]) availableSeatListArray.getArray();
-                List<String> availableSeatList = new ArrayList<String>(Arrays.asList(availableSeatListString));
+                ArrayList<String> availableSeatList = new ArrayList<String>(Arrays.asList(availableSeatListString));
                 //Create new flight.
-                Flight flight = new Flight(airline, flightnumber, origin, destination, adultPrice, childPrice, departure, arrival, handLuggagePrice, luggagePrice, disabilityAccess, animalTransfer);
+                Flight flight = new Flight(airline, flightnumber, origin, destination, adultPrice, childPrice, departure, arrival, duration, handLuggagePrice, luggagePrice, disabilityAccess, animalTransfer);
+                flight.setId(id);
                 flight.setAvailableSeatList(availableSeatList);
                 //Add the flight into the flight list.
                 flights.add(flight);
@@ -120,6 +125,58 @@ public class FlightService {
             }//end finally try
         }//end try
         return flights;
+    }
+
+    public void updateAvailableSeatList(Flight flight, List<String> seats) {
+        String SQL = "UPDATE flights SET availableseatlist = ? WHERE id = ?";
+
+        long id = 0;
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+
+        try {
+            conn = getConnection();
+            pstmt = conn.prepareStatement(SQL);
+
+            Array array = conn.createArrayOf("text", seats.toArray());
+            pstmt.setArray(1, array);
+            pstmt.setInt(2, flight.getId());
+
+            int affectedRows = pstmt.executeUpdate();
+            // check the affected rows 
+            if (affectedRows > 0) {
+                // get the ID back
+                try (ResultSet rs = pstmt.getGeneratedKeys()) {
+                    if (rs.next()) {
+                        id = rs.getLong(1);
+                    }
+                } catch (SQLException ex) {
+                    System.out.println(ex.getMessage());
+                }
+            }
+        } catch (SQLException se) {
+            //Handle errors for JDBC
+            se.printStackTrace();
+        } catch (Exception e) {
+            //Handle errors for Class.forName
+            e.printStackTrace();
+        } finally {
+            //finally block used to close resources
+            try {
+                if (pstmt != null) {
+                    conn.close();
+                }
+            } catch (SQLException se) {
+            }// do nothing
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException se) {
+                se.printStackTrace();
+            }//end finally try
+        }//end try
+        System.out.println("Available seat list field successfully updated in the database table flights!");
     }
 
 }

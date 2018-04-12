@@ -9,5 +9,19 @@
             <file>file:/Users/astalara/NetBeansProjects/hopur9f/src/hopur9futlit/FlightsUIController.java</file>
             <file>file:/Users/astalara/NetBeansProjects/hopur9f/src/hopur9futlit/BookingUI.fxml</file>
         </group>
+        <group>
+            <file>file:/Users/sigrundish/Skoli/Throun/hopur9f/src/hopur9fvinnsla/BookingService.java</file>
+            <file>file:/Users/sigrundish/Skoli/Throun/hopur9f/src/hopur9futlit/FlightsUIController.java</file>
+            <file>file:/Users/sigrundish/Skoli/Throun/hopur9f/src/hopur9futlit/FlightsUI.fxml</file>
+            <file>file:/Users/sigrundish/Skoli/Throun/hopur9f/src/Mocks/FlightsMock.java</file>
+            <file>file:/Users/sigrundish/Skoli/Throun/hopur9f/src/hopur9fvinnsla/Passenger.java</file>
+            <file>file:/Users/sigrundish/Skoli/Throun/hopur9f/src/hopur9fvinnsla/Flight.java</file>
+            <file>file:/Users/sigrundish/Skoli/Throun/hopur9f/src/hopur9futlit/Hopur9f.java</file>
+            <file>file:/Users/sigrundish/Skoli/Throun/hopur9f/src/hopur9fvinnsla/PassengerService.java</file>
+            <file>file:/Users/sigrundish/Skoli/Throun/hopur9f/src/hopur9fvinnsla/Booking.java</file>
+            <file>file:/Users/sigrundish/Skoli/Throun/hopur9f/src/hopur9fvinnsla/FlightService.java</file>
+            <file>file:/Users/sigrundish/Skoli/Throun/hopur9f/src/hopur9futlit/BookingUI.fxml</file>
+            <file>file:/Users/sigrundish/Skoli/Throun/hopur9f/src/hopur9futlit/BookingUIController.java</file>
+        </group>
     </open-files>
 </project-private>

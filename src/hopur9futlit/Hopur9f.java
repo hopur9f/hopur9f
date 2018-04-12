@@ -5,11 +5,14 @@
  */
 package hopur9futlit;
 
+import hopur9fvinnsla.Flight;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Date;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -23,9 +26,8 @@ import javafx.stage.Stage;
 public class Hopur9f extends Application {
 
     /**
-     * Connect to the PostgreSQL database
-     * The connection here is not used, just nice to know 
-     * if the connection is successful in the beginning.
+     * Connect to the PostgreSQL database The connection here is not used, just
+     * nice to know if the connection is successful in the beginning.
      *
      * @return a Connection object
      * @throws java.net.URISyntaxException
@@ -49,7 +51,7 @@ public class Hopur9f extends Application {
     }
 
     @Override
-    public void start(Stage stage) throws Exception {
+    public void start(Stage stage) throws Exception {       
         Parent root = FXMLLoader.load(getClass().getResource("FlightsUI.fxml"));
 
         Scene scene = new Scene(root);

@@ -19,21 +19,22 @@ public class Passenger {
     private String lastName;
     private String email;
     private LocalDate birthDate;
-    private String residency;
+    private String nationality;
     private int numberHandLuggage;
     private int numberLuggage;
     private String seatNumber;
 
     public Passenger(String firstName, String lastName, String email, LocalDate birthDate,
-            String residency, int numberHanLuggage, int numberLuggage, String SeatNumber) {
+            String nationality, int numberHanLuggage, int numberLuggage, String seatNumber) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.birthDate = birthDate;
-        this.residency = residency;
+        this.nationality = nationality;
         this.numberHandLuggage = numberHanLuggage;
         this.numberLuggage = numberLuggage;
         this.seatNumber = seatNumber;
+
     }
 
     public boolean isAdult() {
@@ -45,6 +46,14 @@ public class Passenger {
         } else {
             return false;
         }
+    }
+    
+    public String getFirstName(){
+        return firstName;
+    }
+    
+    public String getLastName(){
+        return firstName;
     }
 
     public String getName() {
@@ -59,6 +68,10 @@ public class Passenger {
     public LocalDate getBirthday() {
         return birthDate;
     }
+    
+    public String getNationality() {
+        return nationality;
+    }
 
     public int getNumberHandLuggage() {
         return numberHandLuggage;
@@ -68,7 +81,7 @@ public class Passenger {
         return numberLuggage;
     }
 
-    public String getSeatsNumber() {
+    public String getSeatNumber() {
         return seatNumber;
     }
 
