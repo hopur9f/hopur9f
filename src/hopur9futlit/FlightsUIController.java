@@ -53,9 +53,6 @@ import javafx.util.StringConverter;
  *
  * @author astalara
  */
-
-
-
 public class FlightsUIController implements Initializable {
 
     @FXML
@@ -105,22 +102,18 @@ public class FlightsUIController implements Initializable {
     @FXML
     private Button bookingButton;
 
-    
     final ToggleGroup group = new ToggleGroup();
     @FXML
     private RadioButton priceSort;
     @FXML
     private RadioButton timeSort;
 
-
- 
-
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        
+
         SpinnerValueFactory<Integer> numAdultsfactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 100, 1);
         numAdults.setValueFactory(numAdultsfactory);
 
@@ -153,28 +146,26 @@ public class FlightsUIController implements Initializable {
         };
         date.setConverter(converter);
         date.setPromptText("dd-MM-yyyy");
-            
+
         priceSort.setToggleGroup(group);
         timeSort.setToggleGroup(group);
-        
-        group.selectedToggleProperty().addListener(new ChangeListener<Toggle>(){
-           public void changed(ObservableValue<? extends Toggle> ov, Toggle old_toggle, Toggle new_toggle) {
+
+        group.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
+            public void changed(ObservableValue<? extends Toggle> ov, Toggle old_toggle, Toggle new_toggle) {
                 sortList(data);
-           } 
+            }
         });
     }
 
-    private void sortList(List tempList){
+    private void sortList(List tempList) {
         if (group.getSelectedToggle() == priceSort) {
             Comparator<Flight> c = Comparator.comparingInt(Flight::getAdultPrice);
             tempList.sort(c);
-        }else {
+        } else {
             Comparator<Flight> c = Comparator.comparingInt(Flight::getAdultPrice);
             tempList.sort(c);
         }
     }
-    
-
 
     @FXML
     private void exitActionPerformed(ActionEvent event) {
@@ -215,11 +206,17 @@ public class FlightsUIController implements Initializable {
      * @param date the departure date of the flight.
      * @return
      */
-    private List<Flight> getFlights(String origin, String dest, LocalDate date) {
+    private List<Flight> getFlights(String origin, String dest, LocalDate date, int numAdults, int numChildren) {
         FlightService fs = new FlightService();
-        
-        List flights = fs.getFlights(origin, dest, date);    
-        sortList(flights);   
+        List<Flight> flights = fs.getFlights(origin, dest, date);
+        sortList(flights);
+        //If there are not available seats for all the guests that is searched for, the flight is removed from the result list.
+        for (int i = 0; i < flights.size(); i++) {          
+            if (flights.get(i).getAvailableSeatList().size() < (numAdults + numChildren)) {
+                flights.remove(flights.get(i));
+                i--;
+            }
+        }
         return flights;
     }
 
@@ -230,13 +227,13 @@ public class FlightsUIController implements Initializable {
      */
     private void setFlightResultsTable(List<Flight> flights) {
         data.clear();
-        
+
         flights.forEach((flight) -> {
             data.add(flight);
-            
+
         });
-      
-        if(data.isEmpty()) {
+
+        if (data.isEmpty()) {
             Label noFlightsLabel = new Label("Engin flug fundust fyrir þína leit.");
             errorValidationVbox.getChildren().add(noFlightsLabel);
         } else {
@@ -255,7 +252,6 @@ public class FlightsUIController implements Initializable {
             handluggagePriceColumn.setCellValueFactory(new PropertyValueFactory<>("handLuggagePrice"));
             luggagePriceColumn.setCellValueFactory(new PropertyValueFactory<>("luggagePrice"));
         }
-
 
     }
 
@@ -299,16 +295,16 @@ public class FlightsUIController implements Initializable {
                 errorValidationVbox.getChildren().add(errorLabel);
             });
         } else {
-            List<Flight> flights = this.getFlights(originValue, destinationValue, dateValue);
+            List<Flight> flights = this.getFlights(originValue, destinationValue, dateValue, numAdultsValue, numChildrenValue);
             this.setFlightResultsTable(flights);
         }
 
     }
-    
+
     public boolean isBeforeToday(LocalDate dateValue) {
         Date now = new Date();
         LocalDate nowDate = now.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-        if(dateValue.isBefore(nowDate)) {
+        if (dateValue.isBefore(nowDate)) {
             return true;
         } else {
             return false;
@@ -317,20 +313,20 @@ public class FlightsUIController implements Initializable {
 
     private List<String> errorValidation(String originValue, String destinationValue, int numAdultsValue, int numChildrenValue, LocalDate dateValue) {
         List<String> validation = new ArrayList();
-        
-        if("".equals(originValue)) {
+
+        if ("".equals(originValue)) {
             validation.add("Vinsamlegast tilgreinið brottfararstað.");
         }
-        if("".equals(destinationValue)) {
+        if ("".equals(destinationValue)) {
             validation.add("Vinsamlegast tilgreinið áfangastað.");
         }
-        if(numAdultsValue + numChildrenValue < 1) {
+        if (numAdultsValue + numChildrenValue < 1) {
             validation.add("Vinsamlegst tilgreinið fjölda fullorðinna og barna þannig að farþegar séu fleiri en 0.");
         }
-        if(dateValue == null) {
+        if (dateValue == null) {
             validation.add("Vinsamlegast tilgreinið dagsetningu.");
         }
-        if(isBeforeToday(dateValue)) {
+        if (isBeforeToday(dateValue)) {
             validation.add("Vinsamlegast veljið dagsetningu sem ekki er liðin.");
         }
         return validation;
