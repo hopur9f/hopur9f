@@ -4,9 +4,12 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group name="yfirferð">
             <file>file:/Users/astalara/NetBeansProjects/hopur9f/src/hopur9futlit/BookingUIController.java</file>
+            <file>file:/Users/astalara/NetBeansProjects/hopur9f/src/hopur9fvinnsla/FlightService.java</file>
             <file>file:/Users/astalara/NetBeansProjects/hopur9f/src/hopur9futlit/Hopur9f.java</file>
             <file>file:/Users/astalara/NetBeansProjects/hopur9f/src/CSS/booking.css</file>
+            <file>file:/Users/astalara/NetBeansProjects/hopur9f/src/hopur9fvinnsla/Passenger.java</file>
             <file>file:/Users/astalara/NetBeansProjects/hopur9f/src/hopur9futlit/FlightsUIController.java</file>
+            <file>file:/Users/astalara/NetBeansProjects/hopur9f/src/hopur9fvinnsla/Booking.java</file>
             <file>file:/Users/astalara/NetBeansProjects/hopur9f/src/hopur9futlit/BookingUI.fxml</file>
         </group>
         <group>
