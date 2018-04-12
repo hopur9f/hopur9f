@@ -68,6 +68,9 @@ public class BookingUIController implements Initializable {
     private Label totalPriceLabel = new Label();
     @FXML
     Button confirmButton = new Button();
+    
+    int handLuggagePrice;
+    int luggagePrice;
 
     BookingUIController(Flight flight, int numberAdults, int numberChildren) {
         this.flight = flight;
@@ -76,6 +79,8 @@ public class BookingUIController implements Initializable {
         this.numberPassenger = numberAdults + numberChildren;
         this.totalPrice = this.flight.getAdultPrice() * numberAdults + this.flight.getChildPrice() * numberChildren;
         this.availableSeats = this.flight.getAvailableSeatList();
+        this.handLuggagePrice = this.flight.getHandLuggagePrice();
+        this.luggagePrice = this.flight.getLuggagePrice();
     }
 
     /**
@@ -137,11 +142,17 @@ public class BookingUIController implements Initializable {
             flight.getAvailableSeatList().forEach(seat -> {
                 availableSeatsInput.getItems().add(seat);
             });
+
+            Label luggagePriceLabel = new Label("Verð fyrir farangur: " + String.valueOf(luggagePrice) + " kr.");
+            luggagePriceLabel.getStyleClass().add("element");
             Label numBags = new Label("Töskufjöldi: ");
             Spinner numBagsInput = new Spinner();
             numBagsInput.setId("numBags");
             SpinnerValueFactory<Integer> numBagsfactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 100, 1);
             numBagsInput.setValueFactory(numBagsfactory);
+
+            Label handLuggagePriceLabel = new Label("Verð fyrir handfarangur: " + String.valueOf(handLuggagePrice) + " kr.");
+            handLuggagePriceLabel.getStyleClass().add("element");           
 
             Label numHandBags = new Label("Fjöldi í handfarangri: ");
             Spinner numHandBagsInput = new Spinner();
@@ -151,8 +162,8 @@ public class BookingUIController implements Initializable {
 
             vBoxContainer.getChildren().addAll(grownUp, lastName, lastnameInput,
                     firstName, firstnameInput, email, emailInput, birthdate, datepicker,
-                    nationality, nationalityInput, availableSeatsLabel, availableSeatsInput, numBags,
-                    numBagsInput, numHandBags, numHandBagsInput);
+                    nationality, nationalityInput, availableSeatsLabel, availableSeatsInput, luggagePriceLabel, numBags,
+                    numBagsInput, handLuggagePriceLabel, numHandBags, numHandBagsInput);
             information.getChildren().add(vBoxContainer);
         }
 
@@ -160,6 +171,8 @@ public class BookingUIController implements Initializable {
         VBox payment = new VBox();
         payment.setId("payment");
         Label paymentLabel = new Label("Greiðsluupplýsingar:");
+
+        totalPriceLabel.setText("Flugverð: " + String.valueOf(this.totalPrice));
         paymentLabel.getStyleClass().add("Header");
 
         totalPriceLabel.setText("Heildarverð: " + String.valueOf(this.totalPrice));
@@ -269,14 +282,16 @@ public class BookingUIController implements Initializable {
                             for (String s : validation) {
                                 Label errorMessage = new Label(s);
                                 errorValidationVBox.getChildren().add(errorMessage);
-                                scroll.setVvalue(0.0);
+                                
                             }
+
                         } else {
                             Passenger passenger = new Passenger(firstname, lastname, email, birthDay, nationality, Integer.valueOf(numHandBagsString), Integer.valueOf(numBagsString), seat);
                             passengers.add(passenger);
                             seatsToRemove.add(seat);
                             //Note we dont want to add passenger into the database here because if payment info is not on 
                             //the correct form we dont want to create booking and therefore not passenger either.
+                            scroll.setVvalue(0.0);
                         }
                     }
 
@@ -337,10 +352,12 @@ public class BookingUIController implements Initializable {
                             //Add booking into DB.
                             Booking booking = new Booking(flight, passengers, cardHolder, cardNumber, expDay, csv);
                             book(passengers, booking);
+                            scroll.setVvalue(0.0);
                         }
                     }
 
                 });
+                
             }
         });
 
