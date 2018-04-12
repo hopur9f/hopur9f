@@ -30,11 +30,11 @@ public class Flight {
     final private Date arrival;
     final private int handLuggagePrice;
     final private int luggagePrice;
-    private List<String> availableSeatList;
+    private ArrayList<String> availableSeatList;
 
     public Flight(String airline, String flightNumber, String origin, String destination,
             int adultPrice, int childPrice, Date departure,
-            Date arrival, int handLuggagePrice, int luggagePrice,
+            Date arrival,int duration, int handLuggagePrice, int luggagePrice,
             boolean disabilityAccess, boolean animalTransfer) {
 
         this.airline = airline;
@@ -45,6 +45,7 @@ public class Flight {
         this.childPrice = childPrice;
         this.departure = departure;
         this.arrival = arrival;
+        this.duration = duration;
         this.handLuggagePrice = handLuggagePrice;
         this.luggagePrice = luggagePrice;
         this.disabilityAccess = disabilityAccess;
@@ -94,6 +95,10 @@ public class Flight {
         return duration;
     }
 
+    public int getId() {
+        return id;
+    }
+
     public int getPrice(int age) {
         if (age <= 12) {
             return childPrice;
@@ -139,7 +144,7 @@ public class Flight {
         generateSeatList(planeCapacity);
     }
 
-    public void setAvailableSeatList(List<String> availableSeatList) {
+    public void setAvailableSeatList(ArrayList<String> availableSeatList) {
         this.availableSeatList = availableSeatList;
     }
 
@@ -148,7 +153,7 @@ public class Flight {
     }
 
     public void removeFromSeatList(String seatNumber) {
-        availableSeatList.remove(seatNumber);
+        availableSeatList.remove(seatNumber);  
     }
 
     public boolean checkIfFullyBooked() {
