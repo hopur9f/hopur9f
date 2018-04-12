@@ -14,7 +14,7 @@ Hópaverkefni í Þróun hugbúnaðar við Háskóla Íslands vor 2018
 
 - https://throun-server.herokuapp.com/passengers
 
-- repo fyrir server/vefþjonustu er á https://github.com/hopur9f/server
+- Repo fyrir server/vefþjonustu er á https://github.com/hopur9f/server
 
 ## Upplýsingar um Netbeans Project
 
