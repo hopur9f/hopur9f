@@ -159,8 +159,8 @@ public class BookingUIController implements Initializable {
             SpinnerValueFactory<Integer> numBagsfactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 100, 1);
             numBagsInput.setValueFactory(numBagsfactory);
 
-            Label handLuggagePriceLabel = new Label("Verð fyrir handfarangur: " + String.valueOf(handLuggagePrice) + " kr.");
-            handLuggagePriceLabel.getStyleClass().add("element");           
+            Label luggagePriceLabel = new Label("Verð fyrir handfarangur: " + String.valueOf(handLuggagePrice) + " kr.");
+            luggagePriceLabel.getStyleClass().add("element");           
 
             Label numHandBags = new Label("Fjöldi í handfarangri: ");
             Spinner numHandBagsInput = new Spinner();
@@ -371,10 +371,10 @@ public class BookingUIController implements Initializable {
                         alert.setTitle("Bókun móttekin");
                         alert.setHeaderText("Bókun þín hefur verið móttekin");
                         alert.setContentText("Þú hefur bókað flug. \n" 
-                                + "     Fjöldi farþega:" + (numberAdult+numberChildren) + "\n"
-                                + "     Brottför:" + flight.getOrigin() + " " 
+                                + "     Fjöldi farþega: " + (numberAdults+numberChildren) + "\n"
+                                + "     Brottför: " + flight.getOrigin() + " " 
                                 + flight.getDeparture() + " " + flight.getDeparture().getTime() + "\n"
-                                + "     Koma:" + flight.getDestination() + " " 
+                                + "     Koma: " + flight.getDestination() + " " 
                                 + flight.getArrival() + " " + flight.getArrival().getTime() + "\n"
                                 + "Bókunarnúmer þitt er Í GLOBALBREYTU");
                         

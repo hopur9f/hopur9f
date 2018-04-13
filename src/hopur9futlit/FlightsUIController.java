@@ -162,7 +162,7 @@ public class FlightsUIController implements Initializable {
             Comparator<Flight> c = Comparator.comparingInt(Flight::getAdultPrice);
             tempList.sort(c);
         } else {
-            Comparator<Flight> c = Comparator.comparingInt(Flight::getAdultPrice);
+            Comparator<Flight> c = Comparator.comparingInt(Flight::getDuration);
             tempList.sort(c);
         }
     }
