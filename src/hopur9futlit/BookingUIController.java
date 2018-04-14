@@ -11,6 +11,7 @@ import hopur9fvinnsla.Flight;
 import hopur9fvinnsla.FlightService;
 import hopur9fvinnsla.Passenger;
 import hopur9fvinnsla.PassengerService;
+import java.io.IOException;
 import static java.lang.Math.toIntExact;
 import java.net.URL;
 import java.text.SimpleDateFormat;
@@ -24,8 +25,11 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
@@ -43,6 +47,7 @@ import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 
 /**
  * FXML Controller class
@@ -224,7 +229,7 @@ public class BookingUIController implements Initializable {
         //Action handler for confirm button
         confirmButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
-            public void handle(ActionEvent e) {
+            public void handle(ActionEvent e) throws IOException {
                 passengers.clear();
                 seatsToRemove.clear();
                 takenSeats.clear();
@@ -348,6 +353,14 @@ public class BookingUIController implements Initializable {
                             LocalDate expDay = getExpDay(expMonth, expYear);
                             Booking booking = new Booking(flight, passengers, cardHolder, cardNumber, expDay, csv);
                             book(passengers, booking);
+                            
+                            ConfirmationUIController confirmationController = new ConfirmationUIController();
+                            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("ConfirmationUI.fxml"));
+                            fxmlLoader.setController(confirmationController);
+                            Parent root1 = (Parent) fxmlLoader.load();
+                            Stage stage = new Stage();
+                            stage.setScene(new Scene(root1));
+                            stage.show(); 
                         }
                     }
 
@@ -492,13 +505,26 @@ public class BookingUIController implements Initializable {
         return passengersIntArray;
     }
 
-    private void book(List<Passenger> passengersToBook, Booking booking) {
+    private void book(List<Passenger> passengersToBook, Booking booking){
         //add every passenger into DB and generate passenger id.
         passengersToBook.forEach(p -> {
             addPassenger(p);
         });
         addBooking(booking);
-
+        
+        /*
+        ConfirmationUIController confirmationController = new ConfirmationUIController();
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("ConfirmationUI.fxml"));
+        fxmlLoader.setController(confirmationController);
+        Parent root1 = (Parent) fxmlLoader.load();
+        Stage stage = new Stage();
+        stage.setScene(new Scene(root1));
+        stage.show();
+        
+        
+        
+        
+        /*
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Bókun móttekin");
         alert.setHeaderText("Bókun þín hefur verið móttekin");
@@ -508,12 +534,30 @@ public class BookingUIController implements Initializable {
                 + flight.getDeparture() + " " + flight.getDeparture().getTime() + "\n"
                 + "     Koma: " + flight.getDestination() + " "
                 + flight.getArrival() + " " + flight.getArrival().getTime() + "\n"
+<<<<<<< HEAD
                 + "     Bókunarnúmer: " + bookingNumber );
 
+=======
+                + "Bókunarnúmer þitt er Í GLOBALBREYTU");
+        
+        
+>>>>>>> Stadfestingar gluggi sem a ad poppa upp thegar kunni hefur bokad flug
         Optional<ButtonType> result = alert.showAndWait();
         if (result.get() == ButtonType.OK) {
-            Platform.exit();
+          //  Platform.isImplicitExit();
+            // Platform.exit();
+     
+            Scene sc = new Scene(this.bookingUI);
+            ((Stage)sc.getWindow()).close();
+                        
+          // this.bookingUI.setVisible(false);
+           
+           
+         
+           
+          // ((Stage)einhverHnappurIController.getScene().getWindow()).close();
         }
+        */
     }
 
     /**
