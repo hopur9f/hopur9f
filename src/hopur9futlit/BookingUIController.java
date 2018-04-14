@@ -54,8 +54,9 @@ public class BookingUIController implements Initializable {
     Flight flight;
     int numberAdults;
     int numberChildren;
-    int numberPassenger;
+    int numberPassengers;
     int totalPrice;
+    int passengerNr;
     List<String> availableSeats;
     List<Passenger> passengers = new ArrayList<>();
     List<Passenger> passengersWithId = new ArrayList<>();
@@ -72,11 +73,10 @@ public class BookingUIController implements Initializable {
     private Label totalPriceLabel = new Label();
     @FXML
     Button confirmButton = new Button();
-    
+
     int handLuggagePrice;
     int luggagePrice;
-    
-    boolean wasValidated = false; //Knows if information given has been validated
+
     @FXML
     private AnchorPane bookingUI;
 
@@ -84,7 +84,7 @@ public class BookingUIController implements Initializable {
         this.flight = flight;
         this.numberAdults = numberAdults;
         this.numberChildren = numberChildren;
-        this.numberPassenger = numberAdults + numberChildren;
+        this.numberPassengers = numberAdults + numberChildren;
         this.totalPrice = this.flight.getAdultPrice() * numberAdults + this.flight.getChildPrice() * numberChildren;
         this.availableSeats = this.flight.getAvailableSeatList();
         this.handLuggagePrice = this.flight.getHandLuggagePrice();
@@ -96,7 +96,6 @@ public class BookingUIController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-      
         errorValidationVBox.setId("errorValidation");
         information.getStyleClass().add("informationStyle");
         Label bookingHeader = new Label("Bókun");
@@ -105,7 +104,7 @@ public class BookingUIController implements Initializable {
         information.getChildren().addAll(bookingHeader, errorValidationVBox);
 
         //Create UI input forms for each passenger.
-        for (int i = 1; i <= numberPassenger; i++) {
+        for (int i = 1; i <= numberPassengers; i++) {
             VBox vBoxContainer = new VBox();
             vBoxContainer.setId("passenger" + i);
 
@@ -147,7 +146,7 @@ public class BookingUIController implements Initializable {
             ComboBox availableSeatsInput = new ComboBox();
             availableSeatsInput.setId("seat");
             availableSeatsInput.setValue("Veldu sæti");
-            for(int j = 0; j < availableSeats.size(); j++) {
+            for (int j = 0; j < availableSeats.size(); j++) {
                 availableSeatsInput.getItems().addAll(availableSeats.get(j));
             }
             Label handLuggagePriceLabel = new Label("Verð fyrir handfarangur: " + String.valueOf(handLuggagePrice) + " kr.");
@@ -160,7 +159,7 @@ public class BookingUIController implements Initializable {
             numBagsInput.setValueFactory(numBagsfactory);
 
             Label luggagePriceLabel = new Label("Verð fyrir handfarangur: " + String.valueOf(handLuggagePrice) + " kr.");
-            luggagePriceLabel.getStyleClass().add("element");           
+            luggagePriceLabel.getStyleClass().add("element");
 
             Label numHandBags = new Label("Fjöldi í handfarangri: ");
             Spinner numHandBagsInput = new Spinner();
@@ -229,14 +228,15 @@ public class BookingUIController implements Initializable {
                 seatsToRemove.clear();
                 takenSeats.clear();
                 errorValidationVBox.getChildren().clear();
+                passengerNr = 0;
 
                 //Loop through each element in the information VBox (passengers and payment info)
                 information.getChildren().forEach((Node vBox) -> {
-                    int passengerNr = 0;
-
+                    System.out.println("getChildren");
                     //Get passenger info
                     if (vBox instanceof VBox && vBox.getId().contains("passenger")) {
-                        passengerNr++;
+                        passengerNr = passengerNr + 1;
+                        System.out.println("Passengernr" + passengerNr);
                         String lastname = "";
                         String firstname = "";
                         String email = "";
@@ -289,9 +289,8 @@ public class BookingUIController implements Initializable {
                                 Label errorMessage = new Label(s);
                                 errorValidationVBox.getChildren().add(errorMessage);
                             }
-                            wasValidated = true;
+                            scroll.setVvalue(0.0);
                         } else {
-  //ef einn er ekki með rettar upplysingar, loggast nokkuð sá sem er með rettar upplysingar tvisvar
                             Passenger passenger = new Passenger(firstname, lastname, email, birthDay, nationality, Integer.valueOf(numHandBagsString), Integer.valueOf(numBagsString), seat);
                             passengers.add(passenger);
                             seatsToRemove.add(seat);
@@ -335,60 +334,42 @@ public class BookingUIController implements Initializable {
                         }
 
                         //Display error validation for passenger info.
-
-                        int year = Integer.valueOf( expYear);
-                        int month = Integer.valueOf(expMonth);
-                        int day;
-                        if (expMonth == "02") {
-                            day = 28;
-                        } else if (expMonth == "04" || expMonth == "06" || expMonth == "09" || expMonth == "10") {
-                            day = 30;
-                        } else {
-                            day = 31;
-                        }
-                        LocalDate expDay = LocalDate.of(year, month, day);
-                        List<String> validation = validatePaymentInfo(cardHolder, cardNumber, expDay, csv);
+                        List<String> validation = validatePaymentInfo(cardHolder, cardNumber, expMonth, expYear, csv);
 
                         if (validation.size() > 0) {
                             for (String s : validation) {
                                 Label errorMessage = new Label(s);
                                 errorValidationVBox.getChildren().add(errorMessage);
                             }
-                            wasValidated = true;
-                        } else {
+                            scroll.setVvalue(0.0);
+                        } else if (passengers.size() == numberPassengers) {
                             //Add booking into DB.
+                            LocalDate expDay = getExpDay(expMonth, expYear);
                             Booking booking = new Booking(flight, passengers, cardHolder, cardNumber, expDay, csv);
                             book(passengers, booking);
                         }
                     }
 
                 });
-                if(wasValidated) {
-                        scroll.setVvalue(0.0);
-                        wasValidated = false;
-                    } else {
-                        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                        alert.setTitle("Bókun móttekin");
-                        alert.setHeaderText("Bókun þín hefur verið móttekin");
-                        alert.setContentText("Þú hefur bókað flug. \n" 
-                                + "     Fjöldi farþega: " + (numberAdults+numberChildren) + "\n"
-                                + "     Brottför: " + flight.getOrigin() + " " 
-                                + flight.getDeparture() + " " + flight.getDeparture().getTime() + "\n"
-                                + "     Koma: " + flight.getDestination() + " " 
-                                + flight.getArrival() + " " + flight.getArrival().getTime() + "\n"
-                                + "Bókunarnúmer þitt er Í GLOBALBREYTU");
-                        
-          
-                        Optional<ButtonType> result = alert.showAndWait();
-                        if(result.get() == ButtonType.OK) {
-                            Platform.exit();
-                        }
-                        
-                    }
-                
+
             }
         });
 
+    }
+
+    public LocalDate getExpDay(String expMonth, String expYear) {
+        int year = Integer.valueOf(expYear);
+        int month = Integer.valueOf(expMonth);
+        int day;
+        if (expMonth == "02") {
+            day = 28;
+        } else if (expMonth == "04" || expMonth == "06" || expMonth == "09" || expMonth == "10") {
+            day = 30;
+        } else {
+            day = 31;
+        }
+        LocalDate expDay = LocalDate.of(year, month, day);
+        return expDay;
     }
 
     /**
@@ -468,7 +449,7 @@ public class BookingUIController implements Initializable {
      * @param csv csv number of card.
      * @return List of errormessages.
      */
-    private List<String> validatePaymentInfo(String cardHolder, String cardNumber,LocalDate expDay, String csv) {
+    private List<String> validatePaymentInfo(String cardHolder, String cardNumber, String expMonth, String expYear, String csv) {
         List<String> validation = new ArrayList<>();
         if (cardHolder == null || cardHolder.isEmpty()) {
             validation.add("Vinsamlegast tilgreinið korthafa.");
@@ -476,8 +457,17 @@ public class BookingUIController implements Initializable {
         if (!isValidCardNumber(cardNumber)) {
             validation.add("Kortanúmer er ekki á réttu formi.");
         }
-        if (expDay.isBefore(LocalDate.now())) {
-            validation.add("Kort er útrunnið");
+        if (expMonth.equals("Mánuður")) {
+            validation.add("Vinsamlegast tilgreinið mánuð sem kort rennur út í.");
+        }
+        if (expYear.equals("Ár")) {
+            validation.add("Vinsamlegast tilgreinið ár sem kort rennur út í.");
+        }
+        if (!expYear.equals("Ár") && !expMonth.equals("Mánuður")) {
+            LocalDate expDay = getExpDay(expMonth, expYear);
+            if (expDay.isBefore(LocalDate.now())) {
+                validation.add("Kort er útrunnið");
+            }
         }
         if (csv.length() != 3) {
             validation.add("csv er ekki á réttu formi, það skal vera þriggja stafa tala.");
@@ -507,7 +497,22 @@ public class BookingUIController implements Initializable {
             addPassenger(p);
         });
         addBooking(booking);
-        // Bæta við staðfestingu að bókun hafi tekist! 
+
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Bókun móttekin");
+        alert.setHeaderText("Bókun þín hefur verið móttekin");
+        alert.setContentText("Þú hefur bókað flug. \n"
+                + "     Fjöldi farþega: " + (numberAdults + numberChildren) + "\n"
+                + "     Brottför: " + flight.getOrigin() + " "
+                + flight.getDeparture() + " " + flight.getDeparture().getTime() + "\n"
+                + "     Koma: " + flight.getDestination() + " "
+                + flight.getArrival() + " " + flight.getArrival().getTime() + "\n"
+                + "Bókunarnúmer þitt er Í GLOBALBREYTU");
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.get() == ButtonType.OK) {
+            Platform.exit();
+        }
     }
 
     /**
