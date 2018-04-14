@@ -57,6 +57,7 @@ public class BookingUIController implements Initializable {
     int numberPassengers;
     int totalPrice;
     int passengerNr;
+    long bookingNumber;
     List<String> availableSeats;
     List<Passenger> passengers = new ArrayList<>();
     List<Passenger> passengersWithId = new ArrayList<>();
@@ -507,7 +508,7 @@ public class BookingUIController implements Initializable {
                 + flight.getDeparture() + " " + flight.getDeparture().getTime() + "\n"
                 + "     Koma: " + flight.getDestination() + " "
                 + flight.getArrival() + " " + flight.getArrival().getTime() + "\n"
-                + "Bókunarnúmer þitt er Í GLOBALBREYTU");
+                + "     Bókunarnúmer: " + bookingNumber );
 
         Optional<ButtonType> result = alert.showAndWait();
         if (result.get() == ButtonType.OK) {
@@ -539,7 +540,7 @@ public class BookingUIController implements Initializable {
     private void addBooking(Booking booking) {
         BookingService bs = new BookingService();
         int[] passengersIntArray = generatePassengersIdArray();
-        bs.insertBooking(booking, flight, passengersIntArray, numberAdults, numberChildren);
+        bookingNumber = bs.insertBooking(booking, flight, passengersIntArray, numberAdults, numberChildren);
         updateAvailableSeatList();
     }
 
