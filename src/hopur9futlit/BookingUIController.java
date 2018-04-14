@@ -21,6 +21,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -229,7 +231,7 @@ public class BookingUIController implements Initializable {
         //Action handler for confirm button
         confirmButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
-            public void handle(ActionEvent e) throws IOException {
+            public void handle(ActionEvent e) {
                 passengers.clear();
                 seatsToRemove.clear();
                 takenSeats.clear();
@@ -354,13 +356,19 @@ public class BookingUIController implements Initializable {
                             Booking booking = new Booking(flight, passengers, cardHolder, cardNumber, expDay, csv);
                             book(passengers, booking);
                             
-                            ConfirmationUIController confirmationController = new ConfirmationUIController();
+                            /*ConfirmationUIController confirmationController = new ConfirmationUIController();
                             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("ConfirmationUI.fxml"));
                             fxmlLoader.setController(confirmationController);
-                            Parent root1 = (Parent) fxmlLoader.load();
-                            Stage stage = new Stage();
-                            stage.setScene(new Scene(root1));
-                            stage.show(); 
+                            Parent root1;
+                            try {
+                                root1 = (Parent) fxmlLoader.load();
+                                Stage stage = new Stage();
+                                stage.setScene(new Scene(root1));
+                                stage.show(); 
+                                ((Stage)confirmButton.getScene().getWindow()).close();
+                            } catch (IOException ex) {
+                                Logger.getLogger(BookingUIController.class.getName()).log(Level.SEVERE, null, ex);
+                            }*/
                         }
                     }
 
@@ -511,6 +519,20 @@ public class BookingUIController implements Initializable {
             addPassenger(p);
         });
         addBooking(booking);
+        
+        ConfirmationUIController confirmationController = new ConfirmationUIController();
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("ConfirmationUI.fxml"));
+        fxmlLoader.setController(confirmationController);
+        Parent root1;
+        try {
+            root1 = (Parent) fxmlLoader.load();
+            Stage stage = new Stage();
+            stage.setScene(new Scene(root1));
+            stage.show(); 
+            ((Stage)confirmButton.getScene().getWindow()).close();
+        } catch (IOException ex) {
+            Logger.getLogger(BookingUIController.class.getName()).log(Level.SEVERE, null, ex);
+        }
         
         /*
         ConfirmationUIController confirmationController = new ConfirmationUIController();
