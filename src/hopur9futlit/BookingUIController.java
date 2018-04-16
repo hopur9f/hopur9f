@@ -355,20 +355,6 @@ public class BookingUIController implements Initializable {
                             LocalDate expDay = getExpDay(expMonth, expYear);
                             Booking booking = new Booking(flight, passengers, cardHolder, cardNumber, expDay, csv);
                             book(passengers, booking);
-                            
-                            /*ConfirmationUIController confirmationController = new ConfirmationUIController();
-                            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("ConfirmationUI.fxml"));
-                            fxmlLoader.setController(confirmationController);
-                            Parent root1;
-                            try {
-                                root1 = (Parent) fxmlLoader.load();
-                                Stage stage = new Stage();
-                                stage.setScene(new Scene(root1));
-                                stage.show(); 
-                                ((Stage)confirmButton.getScene().getWindow()).close();
-                            } catch (IOException ex) {
-                                Logger.getLogger(BookingUIController.class.getName()).log(Level.SEVERE, null, ex);
-                            }*/
                         }
                     }
 
@@ -520,7 +506,7 @@ public class BookingUIController implements Initializable {
         });
         addBooking(booking);
         
-        ConfirmationUIController confirmationController = new ConfirmationUIController();
+        ConfirmationUIController confirmationController = new ConfirmationUIController((numberAdults+numberChildren),flight, totalPrice, bookingNumber);
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("ConfirmationUI.fxml"));
         fxmlLoader.setController(confirmationController);
         Parent root1;
@@ -533,22 +519,6 @@ public class BookingUIController implements Initializable {
         } catch (IOException ex) {
             Logger.getLogger(BookingUIController.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
-        /*
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Bókun móttekin");
-        alert.setHeaderText("Bókun þín hefur verið móttekin");
-        alert.setContentText("Þú hefur bókað flug. \n"
-                + "     Fjöldi farþega: " + (numberAdults + numberChildren) + "\n"
-                + "     Brottför: " + flight.getOrigin() + " "
-                + flight.getDeparture() + " " + flight.getDeparture().getTime() + "\n"
-                + "     Koma: " + flight.getDestination() + " "
-                + flight.getArrival() + " " + flight.getArrival().getTime() + "\n"
-                + "     Bókunarnúmer: " + bookingNumber );
-
-                + "Bókunarnúmer þitt er Í GLOBALBREYTU");
-        
-        */
     }
 
     /**
