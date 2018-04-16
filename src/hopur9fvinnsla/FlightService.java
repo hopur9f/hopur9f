@@ -75,7 +75,7 @@ public class FlightService {
                     + "AND destination "
                     + "LIKE '%" + dest + "%' "
                     + "AND date_trunc('day', departure) = '" + date + "'";
-            System.out.println("sql"+sql);
+            System.out.println("sql" + sql);
             ResultSet rs = stmt.executeQuery(sql);
             while (rs.next()) {
                 //Retrieve by column name
@@ -86,8 +86,8 @@ public class FlightService {
                 String destination = rs.getString("destination");
                 int adultPrice = rs.getInt("adultprice");
                 int childPrice = rs.getInt("childPrice");
-                Date departure = rs.getDate("departure");
-                Date arrival = rs.getDate("arrival");
+                Timestamp departure = rs.getTimestamp("departure");
+                Timestamp arrival = rs.getTimestamp("arrival");
                 int duration = rs.getInt("duration");
                 int handLuggagePrice = rs.getInt("handluggageprice");
                 int luggagePrice = rs.getInt("luggagePrice");
