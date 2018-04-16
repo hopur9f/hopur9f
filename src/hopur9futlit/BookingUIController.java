@@ -535,18 +535,6 @@ public class BookingUIController implements Initializable {
         }
         
         /*
-        ConfirmationUIController confirmationController = new ConfirmationUIController();
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("ConfirmationUI.fxml"));
-        fxmlLoader.setController(confirmationController);
-        Parent root1 = (Parent) fxmlLoader.load();
-        Stage stage = new Stage();
-        stage.setScene(new Scene(root1));
-        stage.show();
-        
-        
-        
-        
-        /*
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Bókun móttekin");
         alert.setHeaderText("Bókun þín hefur verið móttekin");
@@ -556,29 +544,10 @@ public class BookingUIController implements Initializable {
                 + flight.getDeparture() + " " + flight.getDeparture().getTime() + "\n"
                 + "     Koma: " + flight.getDestination() + " "
                 + flight.getArrival() + " " + flight.getArrival().getTime() + "\n"
-<<<<<<< HEAD
                 + "     Bókunarnúmer: " + bookingNumber );
 
-=======
                 + "Bókunarnúmer þitt er Í GLOBALBREYTU");
         
-        
->>>>>>> Stadfestingar gluggi sem a ad poppa upp thegar kunni hefur bokad flug
-        Optional<ButtonType> result = alert.showAndWait();
-        if (result.get() == ButtonType.OK) {
-          //  Platform.isImplicitExit();
-            // Platform.exit();
-     
-            Scene sc = new Scene(this.bookingUI);
-            ((Stage)sc.getWindow()).close();
-                        
-          // this.bookingUI.setVisible(false);
-           
-           
-         
-           
-          // ((Stage)einhverHnappurIController.getScene().getWindow()).close();
-        }
         */
     }
 
