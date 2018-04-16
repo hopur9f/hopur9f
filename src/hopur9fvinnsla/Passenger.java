@@ -53,7 +53,7 @@ public class Passenger {
     }
     
     public String getLastName(){
-        return firstName;
+        return lastName;
     }
 
     public String getName() {
