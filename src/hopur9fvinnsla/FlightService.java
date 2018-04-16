@@ -14,6 +14,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -67,12 +68,14 @@ public class FlightService {
         try {
             conn = this.getConnection();
             stmt = conn.createStatement();
+            Timestamp timeStampDate = Timestamp.valueOf(date.atStartOfDay());
             String sql = "SELECT * FROM flights "
                     + "WHERE origin "
                     + "LIKE '%" + origin + "%' "
                     + "AND destination "
                     + "LIKE '%" + dest + "%' "
-                    + "AND departure = '" + date + "'";
+                    + "AND date_trunc('day', departure) = '" + date + "'";
+            System.out.println("sql" + sql);
             ResultSet rs = stmt.executeQuery(sql);
             while (rs.next()) {
                 //Retrieve by column name
@@ -83,8 +86,8 @@ public class FlightService {
                 String destination = rs.getString("destination");
                 int adultPrice = rs.getInt("adultprice");
                 int childPrice = rs.getInt("childPrice");
-                Date departure = rs.getDate("departure");
-                Date arrival = rs.getDate("arrival");
+                Timestamp departure = rs.getTimestamp("departure");
+                Timestamp arrival = rs.getTimestamp("arrival");
                 int duration = rs.getInt("duration");
                 int handLuggagePrice = rs.getInt("handluggageprice");
                 int luggagePrice = rs.getInt("luggagePrice");
